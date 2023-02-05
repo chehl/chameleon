@@ -1,0 +1,5 @@
+xref:../../README.adoc#_features[README] | xref:3.2_JPA_and_Spring_Data.adoc[Previous] | xref:../4_Security/4.1_Single_sign-on.adoc[Next]
+
+== 3.3 Database migration with Flyway
+
+We do database migration with Flyway. We store our SQL scripts in _src/main/resources/db/migration_. The migration is then automatically executed during startup of the application if it has not yet been applied to the database. Flyway keeps track if a script has already been applied with the table _flyway_schema_history_ in the database.

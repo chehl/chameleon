@@ -1,0 +1,8 @@
+{
+  "realm": "chameleon",
+  "auth-server-url" : "http://localhost:4444/auth",
+  "resource" : "chameleon",
+  "credentials": {
+    "secret": "c8a261c9-7b47-41a0-9658-661adb380348"
+  }
+}

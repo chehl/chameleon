@@ -1,0 +1,54 @@
+xref:../../README.adoc#_features[README] | xref:../1_Architecture/1.7_Configuration.adoc[Previous] | xref:2.2_OpenAPI.adoc[Next]
+
+== 2.1 REST controller
+
+We define a RESTful API for our use cases. We use the following API path for our resource for _locations_:
+
+    /api/v1/locations
+
+=== Mapping of use cases
+
+We map all use cases to the corresponding HTTP methods and use appropriate HTTP return codes:
+
+.Mapping of use cases
+[cols=3*,options=header]
+|===
+| Use case
+| Http method
+| Http code if success
+a| get location by id                       a| GET    a| 200 Ok
+a| get all locations                        a| GET    a| 200 Ok
+a| add location                             a| POST   a| *201 Created*
+a| update location                          a| PATCH  a| 200 Ok
+a| delete location                          a| DELETE a| *204 No Content*
+a| calculate distance between two locations a| GET    a| 200 Ok
+|===
+
+=== Errors scenarios
+
+We define the following error scenarios:
+
+[cols=2*,options=header]
+|===
+| Error scenario
+| Http code
+a| Client sends bad request. a| 400 Bad request
+a| User is not logged in. a| 401 Unauthorized
+a| User is not authorized, e.g., does not have the necessary role(s). a| 403 Forbidden
+a| The requested entity is not found. a| 404 Not found
+a| The update is too late (i.e., optimistic concurrency control of hibernate has kicked in). a| 409 Resource conflict
+a| There is invalid data or a constraint violation. a| 422 Unprocessable entity
+a| We found a bug. a| 500 Internal Server Error
+a| There is a timeout in the reverse proxy (i.e., the application is not running). a| 502 Bad Gateway
+|===
+
+=== PATCH vs. PUT
+
+*PUT* must be idempotent. In addition, PUT always updates the whole resource. It cannot do partial updates.
+
+*PATCH* may or may not be idempotent. It can do partial updates. There are two ways to implement PATCH:
+
+* JSON Patch -- RFC6902: https://www.rfc-editor.org/rfc/rfc6902
+* JSON Merge Patch -- RFC 7386: https://www.rfc-editor.org/rfc/rfc7386
+
+This application uses _JSON Merge Patch_.

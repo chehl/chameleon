@@ -1,0 +1,24 @@
+xref:../../README.adoc#_features[README] | xref:6.2_Architectural_unit_tests.adoc[Previous] | Next
+
+== 6.3 Integration tests
+
+Integration tests validate the business use cases of an application. They are *black-box tests* against the deployed application.
+
+For each business use case, there should be at least an integration test for the _happy path_ and an integration test for an error scenario.
+
+More importantly, integration tests should be easily readable by and understandable for non-technical stakeholders. Therefore, we have implemented *behavior-driven integration tests* using _Cucumber_:
+
+.Integration tests for use cases
+[cols=2*,options=header]
+|===
+| Use case
+| Integration test
+a| get location by id                       a| xref:../../src/intTest/resources/cde.chameleon/locations/getLocationById.feature[getLocationById.feature]
+a| get all locations                        a| xref:../../src/intTest/resources/cde.chameleon/locations/getLocations.feature[getLocations.feature]
+a| add location                             a| xref:../../src/intTest/resources/cde.chameleon/locations/addLocation.feature[addLocation.feature]
+a| update location                          a| xref:../../src/intTest/resources/cde.chameleon/locations/updateLocation.feature[updateLocation.feature]
+a| delete location                          a| xref:../../src/intTest/resources/cde.chameleon/locations/deleteLocation.feature[deleteLocation.feature]
+a| calculate distance between two locations a| xref:../../src/intTest/resources/cde.chameleon/locations/getDistance.feature[getDistance.feature]
+|===
+
+*NB:* The dependency Cucumber Spring introduces a special scope *@ScenarioScope* to hold on to data for exactly one test scenario.

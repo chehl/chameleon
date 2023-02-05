@@ -1,0 +1,13 @@
+xref:../../README.adoc#_features[README] | xref:2.4_Model_mapper.adoc[Previous] | xref:2.6_ETags.adoc[Next]
+
+== 2.5 Error handling
+
+In Spring, we can define global error handlers, but also do local error handling.
+
+=== Global error handling
+
+Global error handling should provide a standard exception processing for exceptions that can occur in any REST controller without regard to their domain. We define it as a *@RestControllerAdvice* in a global exception handler (see xref:../../src/main/java/cde/chameleon/api/GlobalExceptionHandler.java[GlobalExceptionHandler]).
+
+=== Local error handling
+
+Local error handling should do *domain-specific* exception handling. We can define this in the specific REST controller of the domain (see xref:../../src/main/java/cde/chameleon/locations/api/LocationController.java[LocationController]).

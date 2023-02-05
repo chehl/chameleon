@@ -1,0 +1,8 @@
+xref:../../README.adoc#_features[README] | xref:1.6_Code_structure.adoc[Previous] | xref:../2_REST_API/2.1_REST_controller.adoc[Next]
+
+== 1.7 Configuration
+
+We use YAML configuration. The configuration file can be found here:
+
+    src/main/resources/application.yml
+

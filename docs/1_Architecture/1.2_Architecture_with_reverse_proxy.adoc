@@ -1,0 +1,26 @@
+xref:../../README.adoc#_features[README] | xref:1.1_Use_cases.adoc[Previous] | xref:1.3_Local_deployment.adoc[Next]
+
+== 1.2 Architecture with reverse proxy
+
+Project _Chameleon_ has the following context diagram:
+
+.Context diagram of project _Chameleon_
+[plantuml]
+....
+actor "API User" as user
+component "chameleon\n(backend)" as chameleon
+package Docker {
+    database "chameleon-postgresql" as c_db
+    component nginx
+    component keycloak
+}
+user -right-> nginx : HTTP/4444
+nginx -right-> keycloak : HTTP/48080\n/auth*
+nginx -down-> chameleon : HTTP/8080\n/*
+chameleon -up-> c_db : HTTP/35432
+note right of chameleon
+    Spring Boot Application
+end note
+....
+
+We use a *reverse proxy* (NGINX) to route incoming requests.

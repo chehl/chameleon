@@ -1,0 +1,38 @@
+xref:../../README.adoc#_features[README] | xref:1.4_Build_with_Gradle.adoc[Previous] | xref:1.6_Code_structure.adoc[Next]
+
+== 1.5 Ports and adapters (hexagonal architecture)
+
+This application follows the architectural style of *Ports and adapters* / *Hexagonal Architecture* / *Clean Architecture*. Using this architecture, the business logic is decoupled from the framework (Spring Boot). To achieve this, we use _inversion of control_ and _dependency injection_.
+
+The idea in a nutshell:
+
+    “Keep the framework at arm’s length”
+– Robert C. Martin, Author of “Clean Code”
+
+.Ports and adapters
+[plantuml]
+....
+component "Domain" as domain {
+    component "Business Logic" as business
+    interface "Database Port" as dbport <<interface>>
+    interface "Messaging Port" as msgport <<interface>>
+    business -down-> dbport : <<injects>>
+    business -right-> msgport : <<injects>>
+}
+component "API" as api
+actor "User" as user
+user -right-> api
+component "Database" as cdb {
+    component "Database Adapter" as db
+}
+component "Messaging" as cmsg {
+    component "Messaging Adapter" as msg
+}
+business <-left- api
+dbport <|-down- db
+note on link: Inversion of Control
+msgport <|-right- msg
+note on link: Inversion of Control
+....
+
+In addition, the architecture is inspired by *domain-driven design (DDD)*. We do not separate data from calculation (also known as _bloodless objects_). We use domain services (only) for orchestration.

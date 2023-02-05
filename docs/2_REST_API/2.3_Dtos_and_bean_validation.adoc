@@ -1,0 +1,11 @@
+xref:../../README.adoc#_features[README] | xref:2.2_OpenAPI.adoc[Previous] | xref:2.4_Model_mapper.adoc[Next]
+
+== 2.3 Dtos and bean validation
+
+_Data transfer objects (Dtos)_ are nothing more than container classes that expose data. A Dto is helpful whenever you need to group values together for passing data around.
+
+Dtos have several advantages:
+
+* We further decouple the API / presentation from the domain. The data contract of the Dto describes the data the REST controller receives, but it is not a system-specific class, like a domain class or an entity class.
+* We can describe the Dtos with OpenAPI schema.
+* We can use *bean validation* to validate the received data. Please note that we have to annotate the method parameters with *@Valid* to enable bean validation in the controller.

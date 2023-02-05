@@ -1,0 +1,7 @@
+xref:../../README.adoc#_features[README] | xref:3.1_Storage_in_a_relational_database.adoc[Previous] | xref:3.3_Database_migration_with_Flyway.adoc[Next]
+
+== 3.2 JPA and Spring Data JPA
+
+We use the Jakarta Persistence API (JPA) to map the relational data to Java objects (see xref:../../src/main/java/cde/chameleon/locations/entity/LocationEntity.java[LocationEntity]).
+
+With Spring Data JPA, we can easily define JPA based repositories and reduce boilerplate code. We just write a repository interfaces, including custom finder methods, and Spring Data JPA will provide the implementation automatically (see xref:../../src/main/java/cde/chameleon/locations/entity/LocationJpaRepository.java[LocationJpaRepository]).

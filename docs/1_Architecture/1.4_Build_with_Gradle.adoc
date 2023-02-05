@@ -1,0 +1,49 @@
+xref:../../README.adoc#_features[README] | xref:1.3_Local_deployment.adoc[Previous] | xref:1.5_Ports_and_adapters.adoc[Next]
+
+== 1.4 Build with Gradle
+
+=== Gradle wrapper
+
+The application ships with Gradle wrappers, so no local gradle installation is required to run gradle tasks.
+
+=== File _build.gradle_
+
+Build and dependency management is done with Gradle in the file _build.gradle_. We define separate _source sets_ for production, unit tests, and integration tests. In addition, we add the _Spring Boot Developer Tools_ for a better development experience.
+
+=== Build project
+
+Change directory to project folder. Build project using `gradle`:
+
+[source,bash]
+----
+./gradlew build
+----
+
+=== Run unit tests
+
+Run unit tests using `gradle`:
+
+[source,bash]
+----
+./gradlew clean test -i
+----
+
+=== Run application
+
+Run application using `gradle`:
+
+[source,bash]
+----
+./gradlew bootRun
+----
+
+=== Run integration tests
+
+Please note that the application must be started before running the integration tests.
+
+Run integration tests using `gradle`:
+
+[source,bash]
+----
+./gradlew intTest
+----

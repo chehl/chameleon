@@ -1,0 +1,24 @@
+xref:../../README.adoc#_features[README] | xref:4.1_Single_sign-on.adoc[Previous] | xref:4.3_OWASP_dependency_check.adoc[Next]
+
+== 4.2 Role-based access control (RBAC, JSR 250)
+
+We implement role-based access control (RBAC, JSR 250). To activate RBAC / JSR 250, we have to enable it in the xref:../../src/main/java/cde/chameleon/config/WebSecurityConfig.java[WebSecurityConfig] with:
+
+    @EnableMethodSecurity(jsr250Enabled=true)
+
+The allowed roles for an operation can then be defined using annotation *@RolesAllowed* in the REST controller.
+
+For this application, we have defined two roles: _locations-read_ and _locations-write_. We map all uses cases to their allowed roles:
+
+.Mapping of use cases to allowed roles
+[cols=2*,options=header]
+|===
+| Use case
+| Allowed roles
+a| get location by id                       a| locations-read
+a| get all locations                        a| locations-read
+a| add location                             a| locations-write
+a| update location                          a| locations-write
+a| delete location                          a| locations-write
+a| calculate distance between two locations a| locations-read
+|===

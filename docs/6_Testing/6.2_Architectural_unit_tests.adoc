@@ -1,0 +1,6 @@
+xref:../../README.adoc#_features[README] | xref:6.1_Unit_tests.adoc[Previous] | xref:6.3_Integration_tests.adoc[Next]
+
+== 6.2 Architectural unit tests
+
+Architectural unit tests ensure that architectural rules and decisions are followed. For our application, we have written architectural unit tests with _ArchUnit_ (see link:https://www.archunit.org[archunit.org]) in class xref:../../src/test/java/cde/chameleon/ChameleonArchitectureTest.java[cde.chameleon.ChameleonArchitectureTest] to ensure that the hexagonal architecture is not violated.
+

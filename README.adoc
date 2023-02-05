@@ -1,0 +1,107 @@
+= Project *Chameleon*
+
+Project _Chameleon_ has been designed as an educational example project for learning the basics of the Spring Boot ecosystem. But project _Chameleon_ tries to be more than just a simple "hello world". It has all the needed parts in place to be as close to a "real world" production-ready software as possible.
+
+== Prerequisites
+
+=== General
+
+- Java 17+
+- Docker 19+
+
+=== Windows
+
+- _Recommended:_ Windows Subsystem for Linux 2+
+
+[#_features]
+== Features
+
+Project _Chameleon_ currently contains the following features:
+
+.Features of project _Chameleon_
+[cols=6*,options=header]
+|===
+| 1 Architecture
+| 2 REST API
+| 3 Database
+| 4 Security
+| 5 Logging
+| 6 Testing
+a|
+xref:docs/1_Architecture/1.1_Use_cases.adoc[1.1 Use cases]
+
+xref:docs/1_Architecture/1.2_Architecture_with_reverse_proxy[1.2 Architecture with reverse proxy]
+
+xref:docs/1_Architecture/1.3_Local_deployment.adoc[1.3 Local deployment]
+
+xref:docs/1_Architecture/1.4_Build_with_Gradle[1.4 Build with Gradle]
+
+xref:docs/1_Architecture/1.5_Ports_and_adapters.adoc[1.5 Ports and adapters]
+
+xref:docs/1_Architecture/1.6_Code_structure.adoc[1.6 Code structure]
+
+xref:docs/1_Architecture/1.7_Configuration.adoc[1.7 Configuration]
+a|
+xref:docs/2_REST_API/2.1_REST_controller.adoc[2.1 REST controller]
+
+with GET, POST, DELETE, and PATCH
+
+xref:docs/2_REST_API/2.2_OpenAPI.adoc[2.2 OpenAPI]
+
+with Swagger UI (URL: `http://localhost:4444/swagger-ui.html`)
+
+xref:docs/2_REST_API/2.3_Dtos_and_bean_validation.adoc[2.3 Dtos and bean validation]
+
+xref:docs/2_REST_API/2.4_Model_mapper.adoc[2.4 Model mapper]
+
+xref:docs/2_REST_API/2.5_Error_handling.adoc[2.5 Error handling]
+
+xref:docs/2_REST_API/2.6_ETags.adoc[2.6 Etags]
+a|
+xref:docs/3_Database/3.1_Storage_in_a_relational_database.adoc[3.1 Storage in a relational database]
+
+with PostgreSQL
+
+with optimistic concurrency control
+
+xref:docs/3_Database/3.2_JPA_and_Spring_Data.adoc[3.2 JPA and Spring Data]
+
+xref:docs/3_Database/3.3_Database_migration_with_Flyway.adoc[3.3 Database migration with Flyway]
+
+a|
+xref:docs/4_Security/4.1_Single_sign-on.adoc[4.1 Single-sign on (SSO)]
+
+with Keycloak (URL: `http://localhost:4444/auth`)
+
+xref:docs/4_Security/4.2_Role-based_access_control.adoc[4.2 Role-base access control (RBAC, JSR 250)]
+
+xref:docs/4_Security/4.3_OWASP_dependency_check.adoc[4.3 OWASP dependency check]
+
+(report: `build/reports/owasp`)
+a|
+xref:docs/5_Logging/5.1_JSON_logging.adoc[5.1 JSON logging]
+
+xref:docs/5_Logging/5.2_Structured_logging.adoc[5.2 Structured logging]
+
+xref:docs/5_Logging/5.3_Request_ids.adoc[5.3 Request ids]
+
+xref:docs/5_Logging/5.4_Users_and_roles.adoc[5.4 Users and roles]
+a|
+xref:docs/6_Testing/6.1_Unit_tests.adoc[6.1 Unit tests]
+
+with JUnit 5 (report: `build/reports/tests`)
+
+with assertions with Google Truth
+
+with coverage report using JaCoCo (report: `build/reports/jacoco`)
+
+xref:docs/6_Testing/6.2_Architectural_unit_tests.adoc[6.2 Architectural unit tests]
+
+with ArchUnit
+
+xref:docs/6_Testing/6.3_Integration_tests.adoc[6.3 Integration tests]
+
+with Cucumber (report: `build/reports/cucumber`)
+|===
+
+Copyright (c) 2023 Christoph Ehlers, ConSol Software GmbH

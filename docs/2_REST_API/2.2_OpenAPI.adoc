@@ -1,0 +1,22 @@
+xref:../../README.adoc#_features[README] | xref:2.1_REST_controller.adoc[Previous] | xref:2.3_Dtos_and_bean_validation.adoc[Next]
+
+== 2.2 OpenAPI
+
+We use OpenAPI to describe the REST API (see xref:../../src/main/java/cde/chameleon/locations/api/LocationController.java[LocationController]).
+
+In principle, there are two possibilities to develop an API with OpenAPI:
+
+* *Design-first*: The plan is converted to a human and machine-readable contract, such as a OpenAPI document, from which the REST controller with delegates is generated. We then have to implement the delegates.
+
+* *Code-first*: Based on the business plan, an API is directly coded, from which a human or machine-readable document, such as a OpenAPI document can be generated.
+
+In this application, we follow a code-first approach.
+
+The generated OpenAPI definition for the REST API for our domain of locations can be found here:
+
+link:http://localhost:4444/v3/api-docs[http://localhost:4444/v3/api-docs].
+
+The generated Swagger UI can be found here:
+
+link:http://localhost:4444/swagger-ui.html[http://localhost:4444/swagger-ui.html].
+

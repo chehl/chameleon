@@ -1,0 +1,25 @@
+xref:../../README.adoc#_features[README] | Previous | xref:1.2_Architecture_with_reverse_proxy.adoc[Next]
+
+== 1.1 Use cases
+
+The application manages _locations_ - with `id`, `name`, `address`, and GPS coordinates (i.e., `latitude` and `longitude`). It provides CRUD operations on these _locations_, including partial updates. In addition, the application supports the calculation of the distance between two given _locations_.
+
+.Use cases
+[plantuml]
+....
+actor "User" as user
+
+usecase "get location by id" as getone
+usecase "get all locations" as getall
+usecase "add location" as add
+usecase "update location" as update
+usecase "delete location" as delete
+usecase "calculate distance between two locations" as distance
+
+user --> getone : GET
+user --> getall : GET
+user --> add : POST
+user --> update : PATCH
+user --> delete : DELETE
+user --> distance : GET
+....

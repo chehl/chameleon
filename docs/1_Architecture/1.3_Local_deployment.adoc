@@ -1,0 +1,67 @@
+xref:../../README.adoc#_features[README] | xref:1.2_Architecture_with_reverse_proxy.adoc[Previous] | xref:1.4_Build_with_Gradle.adoc[Next]
+
+== 1.3 Local deployment
+
+We deploy dependent services (e.g., database, keycloak,) through docker-compose. The idea is a dev-prod parity -- no more “works on my machine!”. Thereby, we get reproducible results.
+
+=== Start containers
+
+Change directory to folder _localdeployment_. Then run `docker-compose`:
+
+[source,bash]
+----
+docker-compose up -d --build
+----
+
+*NB:* On Windows, please execute this command inside the bash of the _Windows Subsystem for Linux_ (WSL).
+
+This will start the following containers:
+
+[cols="1,4,8,8",options=header]
+|===
+| #
+| Name
+| Access
+| Comment
+| 1
+| keycloak-database
+| jdbc:postgresql://localhost:45432/keycloak
+| PostgreSQL database for the data storage of Keycloak
+| 2
+| keycloak
+| Admin (via NGINX): http://localhost:4444/auth/
+
+  Admin (directly): http://localhost:48080/auth
+| an open source software product to allow single sign-on with identity and access management
+| 3
+| nginx
+| http://localhost:4444
+| reverse proxy
+| 4
+| chameleon-database
+| jdbc:postgresql://localhost:35432/chameleon
+| PostgreSQL database for business data of project Chameleon
+| 5
+| _Optional:_ artemis
+| Web-console (via NGINX): http://localhost:4444/artemis/console
+
+Web-console (directly): http://localhost:58161/artemis/console
+
+broker-url: tcp://localhost:51616
+| ActiveMQ Artemis Message broker
+| 6
+| _Optional:_ pgadmin4
+| Web-console (via NGINX): http://localhost:4444/pgadmin/
+
+Web-console (directly): http://localhost:60080/pgadmin/
+| Web UI for Postgres. Preconfigured with both keycloak-database and chameleon-database
+|===
+
+=== Stop containers
+
+Shut down the containers with:
+
+[source,bash]
+----
+docker-compose down
+----

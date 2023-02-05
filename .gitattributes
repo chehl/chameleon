@@ -1,0 +1,3 @@
+* text=auto
+mvnw text eol=lf
+gradlew text eol=lf

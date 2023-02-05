@@ -1,0 +1,20 @@
+xref:../../README.adoc#_features[README] | xref:../2_REST_API/2.5_Error_handling.adoc[Previous] | xref:3.2_JPA_and_Spring_Data.adoc[Next]
+
+== 3.1 Storage in a relational database
+
+The data of the application is stored in a PostgreSQL relational database.
+
+.Database schema for locations
+[plantuml]
+....
+entity locations {
+    <u>id UUID</u>
+    opt_lock BIGINT
+    name TEXT
+    address TEXT
+    latitude DECIMAL
+    longitude DECIMAL
+}
+....
+
+The column _opt_lock_ is a technical column to allow for *optimistic concurrency control* with Hibernate / JPA.

@@ -1,0 +1,9 @@
+xref:../../README.adoc#_features[README] | xref:5.1_JSON_logging.adoc[Previous] | xref:5.3_Request_ids.adoc[Next]
+
+== 5.2 Structured logging
+
+Structured logging allows us to add additional context information to JSON logs that can be separately indexed and searched in the central log aggregation. Examples are:
+
+* a request id
+* the requesting user and the user's role
+* information about the current business use case (e.g., information about the requested entity)

@@ -1,0 +1,86 @@
+xref:../../README.adoc#_features[README] | xref:1.5_Ports_and_adapters.adoc[Previous] | xref:1.7_Configuration.adoc[Next]
+
+== 1.6 Code structure
+
+=== Package structure
+
+The backend of project _Chameleon_ has the following package structure:
+
+.Package structure of project _Chameleon_
+[plantuml]
+....
+package cde.chameleon {
+    package api
+    package config
+
+    note top of config
+        Configures application
+    end note
+    note bottom of api
+        Provides cross-cutting concerns
+        of all REST endpoints
+    end note
+
+    package locations {
+        package api as locations.api
+        package domain as locations.domain
+        package entity as locations.entity
+        locations.api ..> locations.domain : <<use>>
+        locations.domain <.. locations.entity : <<use>>
+        locations.api .left.> api : <<use>>
+
+        note right of locations.api
+            Provides REST endpoint
+        end note
+        note right of locations.domain
+            Contains business logic
+            Must not depend on a technical package (e.g., api, entity)
+        end note
+        note right of locations.entity
+            Manages database access
+        end note
+    }
+}
+....
+
+=== Class diagram for domain _locations_
+
+The domain _locations_ has the following class diagram:
+
+.Class diagram of domain _locations_
+[plantuml]
+....
+() REST
+package api {
+  class LocationController <<RestController>>
+  class LocationDto
+}
+package domain {
+  class LocationDomainService <<Service>>
+  interface LocationRepository <<interface>>
+  class Location <<Domain-Object>>
+}
+package entity {
+  class DatabaseLocationRepository <<Repository>>
+  interface LocationJpaRepository <<Repository>>
+  class LocationEntity <<Entity>>
+}
+() Database
+
+REST -right-> LocationController
+
+LocationController -down-> LocationDomainService
+LocationDomainService -down-> LocationRepository
+LocationRepository <|-down- DatabaseLocationRepository
+DatabaseLocationRepository -down-> LocationJpaRepository
+
+LocationController .right.> LocationDto : <<use>>
+LocationController .right.> Location : <<use>>
+LocationDomainService .right.> Location : <<use>>
+LocationRepository .right.> Location : <<use>>
+DatabaseLocationRepository .right.> Location : <<use>>
+DatabaseLocationRepository .right.> LocationEntity : <<use>>
+LocationJpaRepository .right.> LocationEntity : <<use>>
+
+LocationJpaRepository -down-> Database
+....

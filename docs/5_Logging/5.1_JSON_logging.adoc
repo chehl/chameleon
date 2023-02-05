@@ -1,0 +1,39 @@
+xref:../../README.adoc#_features[README] | xref:../4_Security/4.2_Role-based_access_control.adoc[Previous] | xref:5.2_Structured_logging.adoc[Next]
+
+== 5.1 JSON logging
+
+JSON logging is highly recommended if we store our log entries in a central log aggregation to enable better, more targeted, more fine-grained search capabilities.
+
+We define the log configuration for the application in xref:../../src/main/resources/logback.xml[src/main/resources/logback.xml]. For unit testing, we actually use a different log configuration, which is defined here: xref:../../src/test/resources/logback-test.xml[src/test/resources/logback-test.xml]. For better human readability, the latter configuration does not use JSON logging.
+
+=== Central log aggregation
+
+In a microservice architecture, central log aggregation helps achieve *observability* of the system landscape. There two prevalent architectures for central log aggregation, the E*K stack and the Grafana stack:
+
+* The *E*K stack* (e.g., ELK with Logstash or EFD with FluendD) stores log entries in an ElasticSearch database. Kibana is used for search and visualization. The biggest advantage of this setup is that it supports full text search.
+
+* The *Grafana stack* stores log entries in Grafana Loki, which uses object storage (e.g., Red Hat Ceph, AWS S3) to store highly compressed "chunks" of data. Grafana is used for search and visualization. Please note that Grafana Loki does not support full text search. Instead, the metadata, e.g. log labels, are indexed, which results in smaller index size, easier operations and reduced costs. The biggest advantage of this setup is that it allows us to store metrics and logs at the same place.
+
+=== Target audience and log levels
+
+When we add logging to an application, we have to think about our purpose and target audience:
+
+[cols=3*,options=header]
+|===
+|  Type                | Purpose / Audience                                                       | Suggested log level
+a| *Error logging*    a| To understand what is wrong during *operation* of the application       a| ERROR, WARN
+a| *Audit logging*    a| To inform *business* about the success or failure of business use cases a| INFO
+a| *Trace logging*    a| To help the *development* to analyze bugs                               a| DEBUG, TRACE
+|===
+
+In addition, we usually set different minimum log levels for the application on different stages (e.g., DEV, E2E, and PROD).
+
+=== Additional considerations
+
+Regarding logging, there are some additional considerations that we should keep in mind, for example:
+
+* Costs: storage space and network traffic
+* Access (including on-boarding and off-boarding)
+* Configuration effort
+* Time needed for maintenance, updates, and improvements (e.g., configuration, dashboards)
+* Data protection (laws, e.g., GDPR): sensible data, data retention

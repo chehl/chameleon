@@ -1,0 +1,19 @@
+xref:../../README.adoc#_features[README] | xref:2.5_Error_handling.adoc[Previous] | xref:../3_Database/3.1_Storage_in_a_relational_database.adoc[Next]
+
+== 2.6 ETags
+
+An ETag is an identifier assigned by a web server to a *specific version of a resource*. If the resource changes, a new and different ETag is assigned. Common methods of ETag generation include using a hash function of the resource's content, a hash of the last modification timestamp, or a revision number. The method by which ETags are generated has never been specified in any HTTP specification. In addition, the use of ETags in the HTTP header is optional.
+
+In this application, we use a hash function of the resource's content to generate the ETag.
+
+=== Network traffic reduction
+
+We can use ETags to reduce network traffic when retrieving data from the web server. We provide the last known ETag with the HTTP header *If-None-Match*. If the resource has not been changed (i.e., the resource still has the same ETag), the web server responds with *304 Not modified* (and does not resend the data of the resource).
+
+=== Optimistic concurrency control
+
+We can use ETags to identify requests to update or delete a resource that are not based on the latest information and thus implement a form of optimistic concurrency control.
+
+If the user requests to *update* or *delete* a resource, we provide the last known ETag with the HTTP header *If-Match*. If the resource has been changed since the last time the user retrieved it (i.e., the resource has a different ETag), the web server responds with *412 Precondition Failed*.
+
+Further discussion about optimistic concurrency control for web API can be found here: link:http://opensource.zalando.com/restful-api-guidelines/#optimistic-locking[http://opensource.zalando.com/restful-api-guidelines/#optimistic-locking]

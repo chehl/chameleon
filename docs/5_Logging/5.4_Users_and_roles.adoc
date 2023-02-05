@@ -1,0 +1,5 @@
+xref:../../README.adoc#_features[README] | xref:5.3_Request_ids.adoc[Previous] | xref:../6_Testing/6.1_Unit_tests.adoc[Next]
+
+== 5.4 Users and roles
+
+We add the authenticated user and the user's roles to the log context of each request for better error analysis. This is implemented using a http filter, see class xref:../../src/main/java/cde/chameleon/api/UserInfoHttpFilter.java[cde.chameleon.api.UserInfoHttpFilter].

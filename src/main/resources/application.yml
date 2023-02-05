@@ -1,0 +1,74 @@
+spring:
+  devtools:
+    livereload:
+      enabled: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'http://localhost:4444/auth/realms/chameleon'
+      client:
+        provider:
+          chameleon:
+            issuer-uri: 'http://localhost:4444/auth/realms/chameleon'
+            authorization-uri: 'http://localhost:4444/auth/realms/chameleon/protocol/openid-connect/auth'
+            token-uri: 'http://localhost:4444/auth/realms/chameleon/protocol/openid-connect/token'
+            user-info-uri: 'http://localhost:4444/auth/realms/chameleon/protocol/openid-connect/userinfo'
+            user-name-attribute: preferred_username
+
+  datasource:
+    url: 'jdbc:postgresql://localhost:35432/chameleon'
+    username: 'chameleon'
+    password: 'chameleon'
+    hikari:
+      minimumIdle: 0
+      maximum-pool-size: 40
+      maxLifetime: 900000
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      auto-commit: false
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    url: 'jdbc:postgresql://localhost:35432/chameleon'
+    user: 'chameleon'
+    password: 'chameleon'
+
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+server:
+  forward-headers-strategy: framework
+
+springdoc:
+  swagger-ui:
+    path: '/swagger-ui.html'
+    oauth:
+      client-id: 'chameleon'
+      client-secret: 'c8a261c9-7b47-41a0-9658-661adb380348'
+      realm: 'chameleon'
+    csrf:
+      enabled: false
+    oauth2-redirect-url: 'http://localhost:4444/swagger-ui/oauth2-redirect.html'
+  api-docs:
+    enabled: true
+  show-actuator: true
+
+management:
+  endpoint:
+    health:
+      show-details: never
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus
+  metrics:
+    tags:
+      application: chameleon

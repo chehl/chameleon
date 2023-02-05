@@ -1,0 +1,73 @@
+version: "3.8"
+services:
+
+  # apache activemq-artemis
+  # -- uncomment if needed --
+#  artemis:
+#    image: quay.io/artemiscloud/activemq-artemis-broker:1.0.13
+#    container_name: artemis
+#    ports:
+#      - "58161:8161"
+#      - "51616:61616"
+#      - "5672:5672"
+#    environment:
+#      - AMQ_USER=artemis
+#      - AMQ_PASSWORD=artemis
+#      - AMQ_EXTRA_ARGS=--nio --relax-jolokia
+
+  # database for the chameleon application
+  chameleon-database:
+    image: postgres:15.1-alpine3.17
+    container_name: chameleon-database
+    volumes:
+      - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/chameleon-database:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=postgres
+    ports:
+      - "35432:5432"
+
+  # pgadmin4 web UI - to interact with the postgres databases
+  # -- uncomment if needed --
+#  pgadmin4:
+#    image: dpage/pgadmin4:6.18 # Skip version 6.19, wait for 6.20: https://github.com/pgadmin-org/pgadmin4/issues/5751
+#    volumes:
+#      - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/pgadmin4/pgadmin4/servers.json:/pgadmin4/servers.json:ro
+#    depends_on:
+#      - chameleon-database
+#    ports:
+#      - "60080:80"
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+#      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+#      - SCRIPT_NAME=/pgadmin
+
+  # keycloak
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.1
+    container_name: keycloak
+    volumes:
+      - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/keycloak/realm-chameleon.json:/opt/keycloak/data/import/realm-chameleon.json:ro
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command:
+      - "start-dev"
+      - "--import-realm"
+      - "--proxy"
+      - "passthrough"
+      - "--http-relative-path=/auth"
+    ports:
+      - "48080:8080"
+
+  # nginx as reverse-proxy
+  nginx:
+    image: nginx:1.23.3-alpine
+    container_name: nginx
+    extra_hosts:
+      - hostip:host-gateway
+    volumes:
+      - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "4444:4444"

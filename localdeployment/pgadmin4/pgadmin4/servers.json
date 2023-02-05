@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "chameleon": {
+      "Name": "chameleon-database",
+      "Group": "docker",
+      "Port": 5432,
+      "Username": "admin",
+      "Host": "chameleon-database",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres"
+    }
+  }
+}

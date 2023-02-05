@@ -1,0 +1,13 @@
+xref:../../README.adoc#_features[README] | xref:../3_Database/3.3_Database_migration_with_Flyway.adoc[Previous] | xref:4.2_Role-based_access_control.adoc[Next]
+
+== 4.1 Single sign-on (SSO)
+
+We implement _single-sign on (SSO)_ with Open ID Connect (OIDC) using Keycloak. The user obtains a *JSON Web Token (JWT)* / OIDC token from Keycloak that contains, among other things, the user's username and roles. Hence, we can use the JWT of a user to authenticate and authorize this user.
+
+The JWT is signed by Keycloak and verified by the Spring Boot application (using public-key cryptography).
+
+To obtain a JWT for a user directly from Keycloak, see xref:../../localdeployment/CREDENTIALS.adoc[localdeployment/CREDENTIALS.adoc]. Visit link:https://jwt.io/[jwt.io] to have a look at the contents of your obtained JWT.
+
+In the local deployment, the admin console of Keycloak can be found here:
+
+    http://localhost:4444/auth/

@@ -1,0 +1,5 @@
+xref:../../README.adoc#_features[README] | xref:2.3_Dtos_and_bean_validation.adoc[Previous] | xref:2.5_Error_handling.adoc[Next]
+
+== 2.4 Model mapper
+
+We can use a model mapper to map domain objects to adapter objects (e.g., Dtos in the controller, e.g., see xref:../../src/main/java/cde/chameleon/locations/api/LocationController.java[LocationController], or entities in persistence, e.g., see xref:../../src/main/java/cde/chameleon/locations/entity/DatabaseLocationRepository.java[DatabaseLocationRepository]).

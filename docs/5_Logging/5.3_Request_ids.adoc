@@ -1,0 +1,5 @@
+xref:../../README.adoc#_features[README] | xref:5.2_Structured_logging.adoc[Previous] | xref:5.4_Users_and_roles.adoc[Next]
+
+== 5.3 Request ids
+
+We add a unique request id (if not present) to the log context of each request to allow for *distributed tracing*. We use http header *X-Request-ID* (see: link:https://http.dev/x-request-id[https://http.dev/x-request-id]). This is implemented using a http filter, see class xref:../../src/main/java/cde/chameleon/api/RequestIdHttpFilter.java[cde.chameleon.api.RequestIdHttpFilter].

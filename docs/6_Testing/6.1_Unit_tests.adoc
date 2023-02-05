@@ -1,0 +1,7 @@
+xref:../../README.adoc#_features[README] | xref:../5_Logging/5.3_Request_ids.adoc[Previous] | xref:6.2_Architectural_unit_tests.adoc[Next]
+
+== 6.1 Unit tests
+
+Unit tests are *white-box tests* that ensure that the code we have written actually does what we intend it to do. They should follow the clear structure of *Arrance -> Act -> Assert (AAA)* or *Given -> When -> Then (GWT)*. Unit test should have descriptive, self-explanatory and self-documenting names. It is good practice to write the unit tests before the production code. This practice is called *test-driven development (TDD)*.
+
+We use _JUnit5_, _Mockito_ (for mocks), and _Google Truth_ (for assertions) to implement the unit tests.

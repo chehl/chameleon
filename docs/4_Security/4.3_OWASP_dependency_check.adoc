@@ -1,0 +1,21 @@
+xref:../../README.adoc#_features[README] | xref:4.2_Role-based_access_control.adoc[Previous] | xref:../5_Logging/5.1_JSON_logging.adoc[Next]
+
+== 4.3 OWASP dependency check
+
+The Open Web Application Security Project (OWASP) is a nonprofit foundation that works to improve the security of software. This group, for example, publishes the link:https://owasp.org/www-project-top-ten/[OWASP Top 10], which spotlight common security problems in applications.
+
+The *Common Vulnerabilities and Exposures (CVE)* system provides a reference method for publicly known information-security vulnerabilities and exposures.
+
+Using the OWASP dependency check, we can scan our dependencies for known CVEs. It integrates well with common tools like: Gradle, Maven (as plugin, for check at build time), Jenkins (for check in CI/CD process), and SonarQube (for check during code analysis).
+
+We have integrated the OWASP dependency check with Gradle as a separate task that can be executed (e.g., in a CI/CD pipeline) and creates a report in `build/reports/owasp`:
+
+[source,bash]
+----
+./gradlew dependencyCheckAnalyze
+----
+
+*NB:* The OWASP dependency check takes several minutes on the first run each day as it first has to download the up-to-date CVE database.
+
+*NB:* Exceptions (e.g., for false positives or future work) can be defined in file xref:../../src/test/resources/owasp-dependency-check.xml[owasp-dependency-check.xml].
+
