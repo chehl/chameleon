@@ -110,6 +110,7 @@ public class LocationController {
             summary = "Get location by name",
             description = "This operation returns a location by name.")
     @Parameter(name = "name", example = "name of location")
+    @Parameter(in = ParameterIn.HEADER, name = "If-None-Match", schema = @Schema(type = "string"))
     @ApiResponse(
             responseCode = "200",
             description = "Successfully returned the location with the specified name")
@@ -117,10 +118,17 @@ public class LocationController {
             value = "/name/{name}", //api/v1/locations/name/MyLocationName
             produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(LocationRoles.READ)
-    public LocationDto getLocationByName(@PathVariable String name) {
+    public LocationDto getLocationByName(
+            @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
+            @PathVariable String name) {
         log.info("Get location with {}", kv(LOCATION_NAME_KEY, name));
 
         LocationDto locationDto = map(locationDomainService.getLocationByName(name));
+
+        // identify unchanged entity via ETag
+        if (ifNoneMatch != null && ifNoneMatch.equals(locationDto.getETag())) {
+            throw new NotModifiedETagException(ifNoneMatch);
+        }
 
         log.info("Found location with {} and {}",
                 kv(LOCATION_ID_KEY, locationDto.getId()), kv(LOCATION_NAME_KEY, locationDto.getName()));
