@@ -65,7 +65,7 @@ public class LocationController {
 
     @Operation(
             summary = "Get all locations",
-            description = "This operations returns all operations.")
+            description = "This operations returns all locations.")
     @ApiResponse(
             responseCode = "200",
             description = "Successfully returned all locations")
@@ -101,6 +101,27 @@ public class LocationController {
         if (ifNoneMatch != null && ifNoneMatch.equals(locationDto.getETag())) {
             throw new NotModifiedETagException(ifNoneMatch);
         }
+        log.info("Found location with {} and {}",
+                kv(LOCATION_ID_KEY, locationDto.getId()), kv(LOCATION_NAME_KEY, locationDto.getName()));
+        return locationDto;
+    }
+
+    @Operation(
+            summary = "Get location by name",
+            description = "This operation returns a location by name.")
+    @Parameter(name = "name", example = "name of location")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Successfully returned the location with the specified name")
+    @GetMapping(
+            value = "/name/{name}", //api/v1/locations/name/MyLocationName
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed(LocationRoles.READ)
+    public LocationDto getLocationByName(@PathVariable String name) {
+        log.info("Get location with {}", kv(LOCATION_NAME_KEY, name));
+
+        LocationDto locationDto = map(locationDomainService.getLocationByName(name));
+
         log.info("Found location with {} and {}",
                 kv(LOCATION_ID_KEY, locationDto.getId()), kv(LOCATION_NAME_KEY, locationDto.getName()));
         return locationDto;

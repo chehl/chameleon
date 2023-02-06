@@ -36,6 +36,15 @@ public class LocationDomainService {
     }
 
     /**
+     * Retrieves the location with the given name.
+     * @param name name of location
+     * @return location with the provided name
+     */
+    public Location getLocationByName(String name) {
+        return locationRepository.findByName(name);
+    }
+
+    /**
      * Creates a new location.
      * @param name name of new location
      * @param address address of new location

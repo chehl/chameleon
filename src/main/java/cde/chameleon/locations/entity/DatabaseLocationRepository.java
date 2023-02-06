@@ -44,6 +44,15 @@ public class DatabaseLocationRepository implements LocationRepository {
                 locationEntity.getLatitude(), locationEntity.getLongitude());
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Location findByName(String name) throws NotFoundLocationException {
+        LocationEntity locationEntity = repository.findLocationEntityByName(name)
+                .orElseThrow(() -> new NotFoundLocationException(name));
+        return new Location(locationEntity.getId(), locationEntity.getName(), locationEntity.getAddress(),
+                locationEntity.getLatitude(), locationEntity.getLongitude());
+    }
+
     @Transactional
     @Override
     public void deleteById(UUID id) {

@@ -26,6 +26,14 @@ public interface LocationRepository {
     Location findById(UUID id) throws NotFoundLocationException;
 
     /**
+     * Finds a location by a given name.
+     * @param name name of location
+     * @return location with the provided name
+     * @throws NotFoundLocationException if a location with the provided name has not been found
+     */
+    Location findByName(String name) throws NotFoundLocationException;
+
+    /**
      * Deletes a location by a given id.
      * @param id id of a location
      * @throws NotFoundLocationException if a location with the provided id has not been found
