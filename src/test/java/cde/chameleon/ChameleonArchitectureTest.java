@@ -5,9 +5,20 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
+import jakarta.servlet.http.HttpFilter;
 
 @AnalyzeClasses(packages = "cde.chameleon", importOptions = ImportOption.DoNotIncludeTests.class)
 class ChameleonArchitectureTest {
+
+    @SuppressWarnings("unused")
+    @ArchTest
+    public static final ArchRule httpFilterMustBeInApi =
+            ArchRuleDefinition
+                    .classes()
+                    .that()
+                    .areAssignableTo(HttpFilter.class)
+                    .should()
+                    .resideInAPackage("..api..");
 
     @SuppressWarnings("unused")
     @ArchTest

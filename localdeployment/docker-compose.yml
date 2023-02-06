@@ -30,18 +30,18 @@ services:
 
   # pgadmin4 web UI - to interact with the postgres databases
   # -- uncomment if needed --
-#  pgadmin4:
-#    image: dpage/pgadmin4:6.18 # Skip version 6.19, wait for 6.20: https://github.com/pgadmin-org/pgadmin4/issues/5751
-#    volumes:
-#      - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/pgadmin4/pgadmin4/servers.json:/pgadmin4/servers.json:ro
-#    depends_on:
-#      - chameleon-database
-#    ports:
-#      - "60080:80"
-#    environment:
-#      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
-#      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
-#      - SCRIPT_NAME=/pgadmin
+  pgadmin4:
+    image: dpage/pgadmin4:6.18 # Skip version 6.19, wait for 6.20: https://github.com/pgadmin-org/pgadmin4/issues/5751
+    volumes:
+      - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/pgadmin4/pgadmin4/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      - chameleon-database
+    ports:
+      - "60080:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+      - SCRIPT_NAME=/pgadmin
 
   # keycloak
   keycloak:

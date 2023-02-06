@@ -9,7 +9,7 @@
         <cve>CVE-2010-4647</cve>
     </suppress>
     <suppress>
-        <notes>Spring Boot application only use SnakeYaml to parse application.yaml files, which should be trusted.</notes>
+        <notes>Spring Boot application only use SnakeYaml to parse application.yml files, which should be trusted.</notes>
         <cve>CVE-2022-1471</cve>
     </suppress>
 </suppressions>
