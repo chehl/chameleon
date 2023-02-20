@@ -71,7 +71,7 @@ public class WebSecurityConfig {
         // disable sessions (i.e. service is stateless)
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // disable CSRF because of disabled sessions
+        // disable CSRF because authentication and authorization is not based on cookies
         http.csrf().disable();
 
         http.authorizeHttpRequests(auth -> auth
