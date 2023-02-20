@@ -30,11 +30,11 @@ Project _Chameleon_ currently contains the following features:
 a|
 xref:docs/1_Architecture/1.1_Use_cases.adoc[1.1 Use cases]
 
-xref:docs/1_Architecture/1.2_Architecture_with_reverse_proxy[1.2 Architecture with reverse proxy]
+xref:docs/1_Architecture/1.2_Architecture_with_reverse_proxy.adoc[1.2 Architecture with reverse proxy]
 
 xref:docs/1_Architecture/1.3_Local_deployment.adoc[1.3 Local deployment]
 
-xref:docs/1_Architecture/1.4_Build_with_Gradle[1.4 Build with Gradle]
+xref:docs/1_Architecture/1.4_Build_with_Gradle.adoc[1.4 Build with Gradle]
 
 xref:docs/1_Architecture/1.5_Ports_and_adapters.adoc[1.5 Ports and adapters]
 
