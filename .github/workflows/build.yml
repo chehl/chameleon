@@ -23,8 +23,15 @@ on:
       - '*.txt'
       - '.all-contributorsrc'
 
+concurrency:
+  group: "workflow = ${{ github.workflow }}, ref = ${{ github.event.ref }}, pr = ${{ github.event.pull_request.id }}"
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.repository != 'chehl/chameleon' }}
+
+permissions:
+  checks: write
+
 jobs:
-  build:
+  populate-cache:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,5 +46,249 @@ jobs:
           cache: 'gradle'
         id: setup
 
+      - name: Populate Cache
+        if: ${{ steps.setup.outputs.cache-hit != 'true' }}
+        run: |
+          ./gradlew --no-daemon build dependencyCheckUpdate
+
+      - name: Cancel Build
+        if: ${{ failure() }}
+        uses: andymckay/cancel-action@0.3
+
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    needs:
+      - populate-cache
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+          cache: 'gradle'
+
       - name: Build and Test
-        run: gradle build --no-daemon
+        run: ./gradlew --no-daemon build
+
+      - name: JUnit Test Report
+        uses: dorny/test-reporter@v1
+        if: ${{ always() }}
+        with:
+          name: JUnit Test Report
+          path: '**/build/test-results/test/TEST*.xml'
+          reporter: java-junit
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: test-report
+          path: '**/build/test-results/test/*.xml'
+          if-no-files-found: error
+          retention-days: 2
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: code-coverage-report
+          path: '**/build/reports/jacoco/test/*.xml'
+          if-no-files-found: error
+          retention-days: 2
+
+      - name: Upload JARs
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: jars
+          path: '**/build/libs/*.jar'
+          if-no-files-found: error
+          retention-days: 2
+
+      - name: Cancel Build
+        if: ${{ failure() }}
+        uses: andymckay/cancel-action@0.3
+
+  sonar:
+    runs-on: ubuntu-latest
+
+    needs:
+      - build-and-test
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Download Coverage Report
+        uses: actions/download-artifact@v3
+        with:
+          name: code-coverage-report
+
+      - name: Set up JDK 17
+
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Sonar Analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          ./gradlew \
+            --no-daemon \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=chehl \
+            -Dsonar.projectKey=chehl_chameleon \
+            -Dsonar.login=${SONAR_TOKEN} \
+            sonar
+
+      - name: Cancel Build
+        if: ${{ failure() }}
+        uses: andymckay/cancel-action@0.3
+
+  owasp:
+    runs-on: ubuntu-latest
+
+    needs:
+      - populate-cache
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: OWASP CVE Check
+        run: ./gradlew --no-daemon dependencyCheckAnalyze
+
+      - name: OWASP Report
+        uses: dorny/test-reporter@v1
+        if: ${{ always() }}
+        with:
+          name: OWASP Report
+          path: '**/build/reports/owasp/*-junit.xml'
+          reporter: java-junit
+
+      - name: Upload OWASP Report
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: owasp-report
+          path: '**/build/reports/owasp/*-junit.xml'
+          if-no-files-found: error
+          retention-days: 2
+
+      - name: Cancel Build
+        if: ${{ failure() }}
+        uses: andymckay/cancel-action@0.3
+
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    needs:
+      - sonar
+      - owasp
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Download JARs
+        uses: actions/download-artifact@v3
+        with:
+          name: jars
+
+      - name: Start docker-compose Environment and Run Integration Tests
+        run: |
+          echo "Starting docker-compose environment"
+          docker-compose -f localdeployment/docker-compose.yml up -d
+          echo "Waiting for keycloak to become ready"
+          host="http://localhost:4444/auth/realms/chameleon/.well-known/uma2-configuration"
+          expected_code=200
+          counter=0
+          while [[ "$(curl -s -o /dev/null -w "%{http_code}" "${host}")" != "${expected_code}" ]]
+          do
+            (( counter = counter + 1 ))
+            if [[ ${counter} -ge 12 ]]
+            then
+              echo "Waited for 1 minute, keycloak did not become ready. Exiting."
+              error 1
+            fi
+            sleep 5
+          done
+          
+          echo "Starting Chameleon"
+          mkdir -p logs
+          java -jar build/libs/chameleon-0.0.1-SNAPSHOT.jar 1>logs/log.txt 2>logs/error.txt &
+          jar_pid=$!
+          echo "Waiting for Chameleon to become ready"
+          host="localhost:8080"
+          expected_code=404
+          counter=0
+          while [[ "$(curl -s -o /dev/null -w "%{http_code}" "${host}")" != "${expected_code}" ]]
+          do
+            (( counter = counter + 1 ))
+            if [[ ${counter} -ge 12 ]]
+            then
+              echo "Waited for 1 minute, Chameleon did not become ready. Exiting."
+              error 1
+            fi
+            sleep 5
+          done
+          
+          ./gradlew --no-daemon intTest
+          
+          echo "Stopping Chameleon"
+          kill "${jar_pid}"
+          
+          echo "Stopping docker-compose environment"
+          docker-compose -f localdeployment/docker-compose.yml down
+
+      - name: Integration Test Report
+        uses: dorny/test-reporter@v1
+        if: ${{ always() }}
+        with:
+          name: Integration Test Report
+          path: '**/build/reports/cucumber/cucumber.xml'
+          reporter: java-junit
+
+      - name: Upload Integration Test App Logs
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: int-test-app-logs
+          path: 'logs/*'
+          if-no-files-found: error
+          retention-days: 2
+
+      - name: Upload Integration Test Report
+        uses: actions/upload-artifact@v3
+        if: ${{ always() }}
+        with:
+          name: int-test-report
+          path: '**/build/reports/cucumber/cucumber.xml'
+          if-no-files-found: error
+          retention-days: 2

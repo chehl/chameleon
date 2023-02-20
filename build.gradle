@@ -7,6 +7,7 @@ plugins {
     id 'jacoco'
     id 'org.owasp.dependencycheck' version '8.0.2'
     id 'com.adarshr.test-logger' version '3.2.0' // optional, creates pretty output of unit tests (during `gradle test`)
+    id 'org.sonarqube' version '3.5.0.2730'
 }
 
 java {
@@ -51,7 +52,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.0.2'
     implementation 'org.springframework.boot:spring-boot-starter-actuator:3.0.2'
     implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.2'
-    
+
     // prod dependencies
     implementation 'org.postgresql:postgresql:42.5.1'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
@@ -94,6 +95,10 @@ test {
 jacocoTestReport {
     dependsOn test
 
+    reports {
+        xml.required = true
+    }
+
     // exclude spring configuration classes from unit test coverage
     afterEvaluate {
         getClassDirectories().setFrom(files(classDirectories.files.collect {
@@ -122,7 +127,8 @@ tasks.register('intTest') {
                     '--plugin', 'pretty',
                     '--glue', 'cde.chameleon', 'src/intTest/resources',
                     '--plugin', 'html:build/reports/cucumber/index.html',
-                    '--plugin', 'json:build/reports/cucumber/cucumber.json'
+                    '--plugin', 'json:build/reports/cucumber/cucumber.json',
+                    '--plugin', 'junit:build/reports/cucumber/cucumber.xml'
             ]
         }
     }
