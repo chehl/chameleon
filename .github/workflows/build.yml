@@ -6,21 +6,21 @@ on:
     branches:
       - "main"
     paths-ignore:
-      - '.gitignore'
+      - '**.gitignore'
       - 'CODEOWNERS'
-      - 'LICENSE'
-      - '*.md'
-      - '*.adoc'
-      - '*.txt'
+      - 'LICENSE.txt'
+      - '**.md'
+      - '**.adoc'
+      - '**.txt'
       - '.all-contributorsrc'
   pull_request:
     paths-ignore:
-      - '.gitignore'
+      - '**.gitignore'
       - 'CODEOWNERS'
-      - 'LICENSE'
-      - '*.md'
-      - '*.adoc'
-      - '*.txt'
+      - 'LICENSE.txt'
+      - '**.md'
+      - '**.adoc'
+      - '**.txt'
       - '.all-contributorsrc'
 
 concurrency:
