@@ -1,5 +1,11 @@
 = Project *Chameleon*
 
+https://github.com/chehl/chameleon/blob/main/LICENSE.txt[image:https://img.shields.io/github/license/chehl/chameleon[GitHub]]
+https://github.com/chehl/chameleon/actions/workflows/build.yml?query=branch%3Amain[image:https://img.shields.io/github/actions/workflow/status/chehl/chameleon/build.yml[GitHub Workflow Status]]
+https://sonarcloud.io/dashboard?id=chehl_chameleon[image:https://sonarcloud.io/api/project_badges/measure?project=chehl_chameleon&metric=alert_status[Sonarcloud Status]]
+https://sonarcloud.io/dashboard?id=chehl_chameleon[image:https://sonarcloud.io/api/project_badges/measure?project=chehl_chameleon&metric=coverage[Sonarcloud Status]]
+
+
 Project _Chameleon_ has been designed as an educational example project for learning the basics of the Spring Boot ecosystem. But project _Chameleon_ tries to be more than just a simple "hello world". It has all the needed parts in place to be as close to a "real world" production-ready software as possible.
 
 == Prerequisites
