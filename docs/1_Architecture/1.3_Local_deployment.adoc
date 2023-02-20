@@ -2,15 +2,22 @@ xref:../../README.adoc#_features[README] | xref:1.2_Architecture_with_reverse_pr
 
 == 1.3 Local deployment
 
-We deploy dependent services (e.g., database, keycloak,) through docker-compose. The idea is a dev-prod parity -- no more “works on my machine!”. Thereby, we get reproducible results.
+We deploy dependent services (e.g., database, keycloak,) through docker compose. The idea is a dev-prod parity -- no more “works on my machine!”. Thereby, we get reproducible results.
 
 === Start containers
 
-Change directory to folder _localdeployment_. Then run `docker-compose`:
+Change directory to folder _localdeployment_. Then run `docker-compose` (compose v1) or `docker compose` (compose v2) (see also link:https://docs.docker.com/compose/compose-v2["Evolution of Compose"]):
 
+.With compose v1
 [source,bash]
 ----
 docker-compose up -d --build
+----
+
+.With compose v2
+[source,bash]
+----
+docker compose up -d --build
 ----
 
 *NB:* On Windows, please execute this command inside the bash of the _Windows Subsystem for Linux_ (WSL).
@@ -61,7 +68,14 @@ Web-console (directly): http://localhost:60080/pgadmin/
 
 Shut down the containers with:
 
+.With compose v1
 [source,bash]
 ----
 docker-compose down
+----
+
+.With compose v2
+[source,bash]
+----
+docker compose down
 ----
