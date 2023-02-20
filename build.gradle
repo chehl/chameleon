@@ -54,7 +54,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.2'
 
     // prod dependencies
-    implementation 'org.postgresql:postgresql:42.5.1'
+    implementation 'org.postgresql:postgresql:42.5.4'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
     implementation 'org.modelmapper:modelmapper:3.1.1'
     implementation 'org.flywaydb:flyway-core:9.14.1'
