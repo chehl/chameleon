@@ -1,6 +1,7 @@
 package cde.chameleon.locations.domain;
 
 import java.util.Optional;
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+@RegisterReflectionForBinding(Location.class)
 @Service
 public class LocationDomainService {
 
