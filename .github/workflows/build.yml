@@ -223,49 +223,78 @@ jobs:
 
       - name: Start docker-compose Environment and Run Integration Tests
         run: |
-          echo "Starting docker-compose environment"
-          docker-compose -f localdeployment/docker-compose.yml up -d
-          echo "Waiting for keycloak to become ready"
-          host="http://localhost:4444/auth/realms/chameleon/.well-known/uma2-configuration"
-          expected_code=200
-          counter=0
-          while [[ "$(curl -s -o /dev/null -w "%{http_code}" "${host}")" != "${expected_code}" ]]
-          do
-            (( counter = counter + 1 ))
-            if [[ ${counter} -ge 12 ]]
+          function wait_for() {
+            [ -n "${1}" ] || return 1
+            local host="${1}"
+            local service_name="${2:-${host}}"
+            local expected_code="${3:-200}"
+            local counter=0
+            printf "Waiting for %s to become ready" "${service_name}"
+            while [[ "$(curl -s -o /dev/null -w "%{http_code}" "${host}")" != "${expected_code}" ]]
+            do
+              (( counter = counter + 1 ))
+              printf "."
+              if [[ "${counter}" -ge 12 ]]
+              then
+                printf "Waited for 1 minute, %s did not become ready. Exiting.\n" "${service_name}"
+                return 1
+              fi
+              sleep 5
+            done
+            printf "OK\n"
+          }
+          
+          function stop_docker() {
+            echo "Stopping docker-compose environment"
+            docker compose -f localdeployment/docker-compose.yml down
+          }
+          
+          function start_docker() {
+            echo "Starting docker-compose environment"
+            local error_code=0
+            docker compose -f localdeployment/docker-compose.yml up -d || error_code="${?}"
+            if [[ "${error_code}" -ne 0 ]]
             then
-              echo "Waited for 1 minute, keycloak did not become ready. Exiting."
-              error 1
+              echo "command [docker-compose ... up ...] returned non-zero exit code ${error_code}. Exiting."
+              exit "${error_code}"
             fi
-            sleep 5
-          done
-          
-          echo "Starting Chameleon"
-          mkdir -p logs
-          java -jar build/libs/chameleon-0.0.1-SNAPSHOT.jar 1>logs/log.txt 2>logs/error.txt &
-          jar_pid=$!
-          echo "Waiting for Chameleon to become ready"
-          host="localhost:8080"
-          expected_code=404
-          counter=0
-          while [[ "$(curl -s -o /dev/null -w "%{http_code}" "${host}")" != "${expected_code}" ]]
-          do
-            (( counter = counter + 1 ))
-            if [[ ${counter} -ge 12 ]]
+            error_code=0
+            wait_for "http://localhost:4444/auth/health/ready" "keycloak" || error_code="${?}"
+            if [[ "${error_code}" -ne 0 ]]
             then
-              echo "Waited for 1 minute, Chameleon did not become ready. Exiting."
-              error 1
+              stop_docker
+              return "${error_code}"
             fi
-            sleep 5
-          done
+          }
           
-          ./gradlew --no-daemon intTest
+          function start_chameleon() {
+            echo "Starting Chameleon"
+            mkdir -p logs
+            java -jar build/libs/chameleon-0.0.1-SNAPSHOT.jar 1>logs/log.txt 2>logs/error.txt &
+            return "${!}"
+          }
           
-          echo "Stopping Chameleon"
-          kill "${jar_pid}"
+          function run_integration_tests() {
+            start_chameleon
+            local jar_pid=${?}
+            local return_code=0
+            wait_for "localhost:8080/actuator/health/readiness" "Chameleon" || return_code="${?}"
           
-          echo "Stopping docker-compose environment"
-          docker-compose -f localdeployment/docker-compose.yml down
+            if [[ "${return_code}" -eq 0 ]]
+            then
+              ./gradlew --no-daemon intTest || return_code="${?}"
+          
+              echo "Stopping Chameleon"
+              kill "${jar_pid}"
+            fi
+            return "${return_code}"
+          }
+          
+          start_docker || exit "${?}"
+          return_code=0
+          run_integration_tests || return_code="${?}"
+          stop_docker || true
+          exit "${return_code}"
 
       - name: Integration Test Report
         uses: dorny/test-reporter@v1

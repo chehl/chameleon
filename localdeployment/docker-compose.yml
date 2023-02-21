@@ -52,12 +52,12 @@ services:
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_PROXY=passthrough
+      - KC_HEALTH_ENABLED=true
+      - KC_HTTP_RELATIVE_PATH=/auth
     command:
       - "start-dev"
       - "--import-realm"
-      - "--proxy"
-      - "passthrough"
-      - "--http-relative-path=/auth"
     ports:
       - "48080:8080"
 
