@@ -36,17 +36,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Git checkout
-        uses: actions/checkout@v3
-
       - name: (Re-)create Comment
-        uses: actions-cool/maintain-one-comment@v3.0.0
+        uses: marocchino/sticky-pull-request-comment@v2
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            🚦Reports🚦
-          body-include: '<!-- Sticky Pull Request Comment -->'
+          header: reports
+          message: |
+            ## 🚦Reports🚦
+            Reports will be posted here as they get available.
+          recreate: true
 
   populate-cache:
     runs-on: ubuntu-latest
@@ -106,7 +104,7 @@ jobs:
         uses: actions/upload-artifact@v3
         if: ${{ always() }}
         with:
-          name: test-report
+          name: unit-test-report
           path: '**/build/test-results/test/*.xml'
           if-no-files-found: error
           retention-days: 2
@@ -130,24 +128,40 @@ jobs:
           retention-days: 2
 
       - name: Update PR status comment on success
-        uses: actions-cool/maintain-one-comment@v3.0.0
+        uses: marocchino/sticky-pull-request-comment@v2
         if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion == 'success' }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            🥳 All ${{ steps.junit-report.outputs.passed }} unit tests passed. You can see the report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
-          body-include: '<!-- Sticky Pull Request Comment -->'
-          update-mode: append
+          header: reports
+          message: |
+
+            <details>
+              <summary><h3>🥳 Unit tests passed</h3></summary>
+
+              |Passed|Failed|Skipped|
+              |----------|---------|-----------|
+              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
+
+              You can see the unit report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
+            </details>
+          append: true
 
       - name: Update PR status comment on failure
-        uses: actions-cool/maintain-one-comment@v3.0.0
+        uses: marocchino/sticky-pull-request-comment@v2
         if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion != 'success' }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            😔 ${{ steps.junit-report.outputs.failed }} unit tests failed. You can see the report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
-          body-include: '<!-- Sticky Pull Request Comment -->'
-          update-mode: append
+          header: reports
+          message: |
+
+            <details>
+              <summary><h3>😔 Unit tests failed</h3></summary>
+
+              |Passed|Failed|Skipped|
+              |----------|---------|-----------|
+              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
+
+              You can see the Unit report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
+            </details>
+          append: true
 
       - name: Cancel Build
         if: ${{ failure() }}
@@ -218,7 +232,7 @@ jobs:
         run: ./gradlew --no-daemon dependencyCheckAnalyze
 
       - name: OWASP Report
-        id: owasp-report
+        id: junit-report
         uses: phoenix-actions/test-reporting@v10
         if: ${{ always() }}
         with:
@@ -236,24 +250,40 @@ jobs:
           retention-days: 2
 
       - name: Update PR status comment on success
-        uses: actions-cool/maintain-one-comment@v3.0.0
-        if: ${{ github.event_name == 'pull_request' && steps.owasp-report.conclusion == 'success' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion == 'success' }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            🥳 All ${{ steps.owasp-report.outputs.passed }} OWASP tests passed. You can see the report [here](${{ steps.owasp-report.outputs.runHtmlUrl }}).
-          body-include: '<!-- Sticky Pull Request Comment -->'
-          update-mode: append
+          header: reports
+          message: |
+
+            <details>
+              <summary><h3>🥳 OWASP check passed</h3></summary>
+
+              |Passed|Failed|Skipped|
+              |----------|---------|-----------|
+              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
+
+              You can see the OWASP report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
+            </details>
+          append: true
 
       - name: Update PR status comment on failure
-        uses: actions-cool/maintain-one-comment@v3.0.0
-        if: ${{ github.event_name == 'pull_request' && steps.owasp-report.conclusion != 'success' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion != 'success' }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            😔 ${{ steps.owasp-report.outputs.failed }} OWASP tests failed. You can see the report [here](${{ steps.owasp-report.outputs.runHtmlUrl }}).
-          body-include: '<!-- Sticky Pull Request Comment -->'
-          update-mode: append
+          header: reports
+          message: |
+
+            <details>
+              <summary><h3>😔 OWASP check failed</h3></summary>
+
+              |Passed|Failed|Skipped|
+              |----------|---------|-----------|
+              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
+
+              You can see the OWASP report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
+            </details>
+          append: true
 
       - name: Cancel Build
         if: ${{ failure() }}
@@ -359,7 +389,7 @@ jobs:
           exit "${return_code}"
 
       - name: Integration Test Report
-        id: it-report
+        id: junit-report
         uses: phoenix-actions/test-reporting@v10
         if: ${{ always() }}
         with:
@@ -386,21 +416,37 @@ jobs:
           retention-days: 2
 
       - name: Update PR status comment on success
-        uses: actions-cool/maintain-one-comment@v3.0.0
-        if: ${{ github.event_name == 'pull_request' && steps.it-report.conclusion == 'success' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion == 'success' }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            🥳 All ${{ steps.it-report.outputs.passed }} integration tests passed. You can see the report [here](${{ steps.it-report.outputs.runHtmlUrl }}).
-          body-include: '<!-- Sticky Pull Request Comment -->'
-          update-mode: append
+          header: reports
+          message: |
+
+            <details>
+              <summary><h3>🥳 Integration tests passed</h3></summary>
+
+              |Passed|Failed|Skipped|
+              |----------|---------|-----------|
+              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
+
+              You can see the Integration test report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
+            </details>
+          append: true
 
       - name: Update PR status comment on failure
-        uses: actions-cool/maintain-one-comment@v3.0.0
-        if: ${{ github.event_name == 'pull_request' && steps.it-report.conclusion != 'success' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion != 'success' }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            😔 ${{ steps.it-report.outputs.failed }} integration tests failed. You can see the report [here](${{ steps.it-report.outputs.runHtmlUrl }}).
-          body-include: '<!-- Sticky Pull Request Comment -->'
-          update-mode: append
+          header: reports
+          message: |
+
+            <details>
+              <summary><h3>😔 Integration tests failed</h3></summary>
+
+              |Passed|Failed|Skipped|
+              |----------|---------|-----------|
+              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
+
+              You can see the Integration test report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
+            </details>
+          append: true
