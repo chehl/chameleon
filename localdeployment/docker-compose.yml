@@ -4,7 +4,7 @@ services:
   # apache activemq-artemis
   # -- uncomment if needed --
 #  artemis:
-#    image: quay.io/artemiscloud/activemq-artemis-broker:1.0.13
+#    image: quay.io/artemiscloud/activemq-artemis-broker:1.0.15
 #    container_name: artemis
 #    ports:
 #      - "58161:8161"
@@ -17,7 +17,7 @@ services:
 
   # database for the chameleon application
   chameleon-database:
-    image: postgres:15.1-alpine3.17
+    image: postgres:15.2-alpine3.17
     container_name: chameleon-database
     volumes:
       - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/chameleon-database:/docker-entrypoint-initdb.d
@@ -31,7 +31,7 @@ services:
   # pgadmin4 web UI - to interact with the postgres databases
   # -- uncomment if needed --
 #  pgadmin4:
-#    image: dpage/pgadmin4:6.18 # Skip version 6.19, wait for 6.20: https://github.com/pgadmin-org/pgadmin4/issues/5751
+#    image: dpage/pgadmin4:6.20
 #    volumes:
 #      - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/pgadmin4/pgadmin4/servers.json:/pgadmin4/servers.json:ro
 #    depends_on:
@@ -45,7 +45,7 @@ services:
 
   # keycloak
   keycloak:
-    image: quay.io/keycloak/keycloak:20.0.1
+    image: quay.io/keycloak/keycloak:20.0.3-0
     container_name: keycloak
     volumes:
       - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/keycloak/realm-chameleon.json:/opt/keycloak/data/import/realm-chameleon.json:ro
@@ -63,7 +63,7 @@ services:
 
   # nginx as reverse-proxy
   nginx:
-    image: nginx:1.23.3-alpine
+    image: nginx:1.23.3-alpine-slim
     container_name: nginx
     extra_hosts:
       - hostip:host-gateway
