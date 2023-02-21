@@ -29,6 +29,7 @@ concurrency:
 
 permissions:
   checks: write
+  pull-requests: write
 
 jobs:
   populate-cache:
@@ -76,7 +77,8 @@ jobs:
         run: ./gradlew --no-daemon build
 
       - name: JUnit Test Report
-        uses: dorny/test-reporter@v1
+        id: junit-report
+        uses: phoenix-actions/test-reporting@v10
         if: ${{ always() }}
         with:
           name: JUnit Test Report
@@ -109,6 +111,26 @@ jobs:
           path: '**/build/libs/*.jar'
           if-no-files-found: error
           retention-days: 2
+
+      - name: Update PR status comment on success
+        uses: actions-cool/maintain-one-comment@v3.0.0
+        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion == 'success' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            🥳 All ${{ steps.junit-report.outputs.passed }} unit tests passed. You can see the report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
+          body-include: '<!-- Sticky Pull Request Comment -->'
+          update-mode: append
+
+      - name: Update PR status comment on failure
+        uses: actions-cool/maintain-one-comment@v3.0.0
+        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion != 'success' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            😔 ${{ steps.junit-report.outputs.failed }} unit tests failed. You can see the report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
+          body-include: '<!-- Sticky Pull Request Comment -->'
+          update-mode: append
 
       - name: Cancel Build
         if: ${{ failure() }}
@@ -178,7 +200,8 @@ jobs:
         run: ./gradlew --no-daemon dependencyCheckAnalyze
 
       - name: OWASP Report
-        uses: dorny/test-reporter@v1
+        id: owasp-report
+        uses: phoenix-actions/test-reporting@v10
         if: ${{ always() }}
         with:
           name: OWASP Report
@@ -193,6 +216,26 @@ jobs:
           path: '**/build/reports/owasp/*-junit.xml'
           if-no-files-found: error
           retention-days: 2
+
+      - name: Update PR status comment on success
+        uses: actions-cool/maintain-one-comment@v3.0.0
+        if: ${{ github.event_name == 'pull_request' && steps.owasp-report.conclusion == 'success' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            🥳 All ${{ steps.owasp-report.outputs.passed }} OWASP tests passed. You can see the report [here](${{ steps.owasp-report.outputs.runHtmlUrl }}).
+          body-include: '<!-- Sticky Pull Request Comment -->'
+          update-mode: append
+
+      - name: Update PR status comment on failure
+        uses: actions-cool/maintain-one-comment@v3.0.0
+        if: ${{ github.event_name == 'pull_request' && steps.owasp-report.conclusion != 'success' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            😔 ${{ steps.owasp-report.outputs.failed }} OWASP tests failed. You can see the report [here](${{ steps.owasp-report.outputs.runHtmlUrl }}).
+          body-include: '<!-- Sticky Pull Request Comment -->'
+          update-mode: append
 
       - name: Cancel Build
         if: ${{ failure() }}
@@ -297,7 +340,8 @@ jobs:
           exit "${return_code}"
 
       - name: Integration Test Report
-        uses: dorny/test-reporter@v1
+        id: it-report
+        uses: phoenix-actions/test-reporting@v10
         if: ${{ always() }}
         with:
           name: Integration Test Report
@@ -321,3 +365,23 @@ jobs:
           path: '**/build/reports/cucumber/cucumber.xml'
           if-no-files-found: error
           retention-days: 2
+
+      - name: Update PR status comment on success
+        uses: actions-cool/maintain-one-comment@v3.0.0
+        if: ${{ github.event_name == 'pull_request' && steps.it-report.conclusion == 'success' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            🥳 All ${{ steps.it-report.outputs.passed }} integration tests passed. You can see the report [here](${{ steps.it-report.outputs.runHtmlUrl }}).
+          body-include: '<!-- Sticky Pull Request Comment -->'
+          update-mode: append
+
+      - name: Update PR status comment on failure
+        uses: actions-cool/maintain-one-comment@v3.0.0
+        if: ${{ github.event_name == 'pull_request' && steps.it-report.conclusion != 'success' }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            😔 ${{ steps.it-report.outputs.failed }} integration tests failed. You can see the report [here](${{ steps.it-report.outputs.runHtmlUrl }}).
+          body-include: '<!-- Sticky Pull Request Comment -->'
+          update-mode: append
