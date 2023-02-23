@@ -36,15 +36,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: (Re-)create Comment
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: ${{ github.event_name == 'pull_request' }}
+      - name: Publish Report
+        uses: turing85/publish-report@v1.0.0
         with:
-          header: reports
-          message: |
-            ## 🚦Reports🚦
-            Reports will be posted here as they get available.
-          recreate: true
+          checkout: 'true'
+          recreate-comment: true
 
   populate-cache:
     runs-on: ubuntu-latest
@@ -91,15 +87,6 @@ jobs:
       - name: Build and Test
         run: ./gradlew --no-daemon build
 
-      - name: JUnit Test Report
-        id: junit-report
-        uses: phoenix-actions/test-reporting@v10
-        if: ${{ always() }}
-        with:
-          name: JUnit Test Report
-          path: '**/build/test-results/test/TEST*.xml'
-          reporter: java-junit
-
       - name: Upload Test Report
         uses: actions/upload-artifact@v3
         if: ${{ always() }}
@@ -127,45 +114,12 @@ jobs:
           if-no-files-found: error
           retention-days: 2
 
-      - name: Update PR status comment on success
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion == 'success' }}
+      - name: Publish Report
+        if: ${{ always() }}
+        uses: turing85/publish-report@v1.0.0
         with:
-          header: reports
-          message: |
-
-            <details>
-              <summary><h3>🥳 Unit tests passed</h3></summary>
-
-              |Passed|Failed|Skipped|
-              |----------|---------|-----------|
-              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
-
-              You can see the unit report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
-            </details>
-          append: true
-
-      - name: Update PR status comment on failure
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion != 'success' }}
-        with:
-          header: reports
-          message: |
-
-            <details>
-              <summary><h3>😔 Unit tests failed</h3></summary>
-
-              |Passed|Failed|Skipped|
-              |----------|---------|-----------|
-              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
-
-              You can see the Unit report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
-            </details>
-          append: true
-
-      - name: Cancel Build
-        if: ${{ failure() }}
-        uses: andymckay/cancel-action@0.3
+          report-name: JUnit Test
+          report-path: '**/build/test-results/test/TEST*.xml'
 
   sonar:
     runs-on: ubuntu-latest
@@ -231,15 +185,6 @@ jobs:
       - name: OWASP CVE Check
         run: ./gradlew --no-daemon dependencyCheckAnalyze
 
-      - name: OWASP Report
-        id: junit-report
-        uses: phoenix-actions/test-reporting@v10
-        if: ${{ always() }}
-        with:
-          name: OWASP Report
-          path: '**/build/reports/owasp/*-junit.xml'
-          reporter: java-junit
-
       - name: Upload OWASP Report
         uses: actions/upload-artifact@v3
         if: ${{ always() }}
@@ -249,45 +194,12 @@ jobs:
           if-no-files-found: error
           retention-days: 2
 
-      - name: Update PR status comment on success
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion == 'success' }}
+      - name: Publish Report
+        if: ${{ always() }}
+        uses: turing85/publish-report@v1.0.0
         with:
-          header: reports
-          message: |
-
-            <details>
-              <summary><h3>🥳 OWASP check passed</h3></summary>
-
-              |Passed|Failed|Skipped|
-              |----------|---------|-----------|
-              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
-
-              You can see the OWASP report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
-            </details>
-          append: true
-
-      - name: Update PR status comment on failure
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion != 'success' }}
-        with:
-          header: reports
-          message: |
-
-            <details>
-              <summary><h3>😔 OWASP check failed</h3></summary>
-
-              |Passed|Failed|Skipped|
-              |----------|---------|-----------|
-              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
-
-              You can see the OWASP report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
-            </details>
-          append: true
-
-      - name: Cancel Build
-        if: ${{ failure() }}
-        uses: andymckay/cancel-action@0.3
+          report-name: OWASP
+          report-path: '**/build/reports/owasp/*-junit.xml'
 
   integration-tests:
     runs-on: ubuntu-latest
@@ -388,14 +300,14 @@ jobs:
           stop_docker || true
           exit "${return_code}"
 
-      - name: Integration Test Report
-        id: junit-report
-        uses: phoenix-actions/test-reporting@v10
+      - name: Upload Integration Test Report
+        uses: actions/upload-artifact@v3
         if: ${{ always() }}
         with:
-          name: Integration Test Report
+          name: int-test-report
           path: '**/build/reports/cucumber/cucumber.xml'
-          reporter: java-junit
+          if-no-files-found: error
+          retention-days: 2
 
       - name: Upload Integration Test App Logs
         uses: actions/upload-artifact@v3
@@ -406,47 +318,9 @@ jobs:
           if-no-files-found: error
           retention-days: 2
 
-      - name: Upload Integration Test Report
-        uses: actions/upload-artifact@v3
+      - name: Publish Report
         if: ${{ always() }}
+        uses: turing85/publish-report@v1.0.0
         with:
-          name: int-test-report
-          path: '**/build/reports/cucumber/cucumber.xml'
-          if-no-files-found: error
-          retention-days: 2
-
-      - name: Update PR status comment on success
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion == 'success' }}
-        with:
-          header: reports
-          message: |
-
-            <details>
-              <summary><h3>🥳 Integration tests passed</h3></summary>
-
-              |Passed|Failed|Skipped|
-              |----------|---------|-----------|
-              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
-
-              You can see the Integration test report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
-            </details>
-          append: true
-
-      - name: Update PR status comment on failure
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: ${{ github.event_name == 'pull_request' && steps.junit-report.conclusion != 'success' }}
-        with:
-          header: reports
-          message: |
-
-            <details>
-              <summary><h3>😔 Integration tests failed</h3></summary>
-
-              |Passed|Failed|Skipped|
-              |----------|---------|-----------|
-              |✅ ${{ steps.junit-report.outputs.passed }}|❌ ${{ steps.junit-report.outputs.failed }}|⚠️ ${{ steps.junit-report.outputs.skipped }}|
-
-              You can see the Integration test report [here](${{ steps.junit-report.outputs.runHtmlUrl }}).
-            </details>
-          append: true
+          report-name: Integration Test
+          report-path: '**/build/reports/cucumber/cucumber.xml'
