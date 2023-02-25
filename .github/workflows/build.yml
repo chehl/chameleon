@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Publish Report
-        uses: turing85/publish-report@v1.0.1
+        uses: turing85/publish-report@v1.0.3
         with:
           checkout: 'true'
           recreate-comment: true
@@ -116,7 +116,7 @@ jobs:
 
       - name: Publish Report
         if: ${{ always() }}
-        uses: turing85/publish-report@v1.0.1
+        uses: turing85/publish-report@v1.0.3
         with:
           report-name: JUnit Test
           report-path: '**/build/test-results/test/TEST*.xml'
@@ -196,7 +196,7 @@ jobs:
 
       - name: Publish Report
         if: ${{ always() }}
-        uses: turing85/publish-report@v1.0.1
+        uses: turing85/publish-report@v1.0.3
         with:
           report-name: OWASP
           report-path: '**/build/reports/owasp/*-junit.xml'
@@ -320,7 +320,7 @@ jobs:
 
       - name: Publish Report
         if: ${{ always() }}
-        uses: turing85/publish-report@v1.0.1
+        uses: turing85/publish-report@v1.0.3
         with:
           report-name: Integration Test
           report-path: '**/build/reports/cucumber/cucumber.xml'
