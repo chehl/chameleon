@@ -45,7 +45,7 @@ services:
 
   # keycloak
   keycloak:
-    image: quay.io/keycloak/keycloak:21.0.1-0
+    image: quay.io/keycloak/keycloak:20.0.3-0
     container_name: keycloak
     volumes:
       - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/keycloak/realm-chameleon.json:/opt/keycloak/data/import/realm-chameleon.json:ro
