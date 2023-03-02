@@ -28,7 +28,7 @@ runs:
         name: jars
 
     - name: Build
-      if: ${{ inputs.download-jars == 'true' }}
+      if: ${{ inputs.download-jars != 'true' }}
       shell: bash
       run: ./gradlew --no-daemon build
 

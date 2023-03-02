@@ -1,4 +1,4 @@
-name: OWASP Scan
+name: OWASP CVE Scan
 
 description: |
   An action to execute OWASP CVE Scans.
