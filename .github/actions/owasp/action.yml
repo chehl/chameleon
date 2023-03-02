@@ -1,0 +1,35 @@
+name: OWASP Scan
+
+description: |
+  An action to execute OWASP CVE Scans.
+
+runs:
+  using: composite
+
+  steps:
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'temurin'
+        cache: 'gradle'
+
+    - name: OWASP CVE Check
+      shell: bash
+      run: ./gradlew --no-daemon dependencyCheckAnalyze
+
+    - name: Upload OWASP Report
+      uses: actions/upload-artifact@v3
+      if: ${{ always() }}
+      with:
+        name: owasp-report
+        path: '**/build/reports/owasp/*-junit.xml'
+        if-no-files-found: error
+        retention-days: 2
+
+    - name: Publish Report
+      if: ${{ always() }}
+      uses: turing85/publish-report@v1.0.3
+      with:
+        report-name: OWASP
+        report-path: '**/build/reports/owasp/*-junit.xml'

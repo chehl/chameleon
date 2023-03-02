@@ -1,0 +1,54 @@
+name: Run Integration Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "**/docker-compose.yml"
+
+concurrency:
+  group: "workflow = ${{ github.workflow }}, ref = ${{ github.event.ref }}, pr = ${{ github.event.pull_request.id }}"
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.repository != 'chehl/chameleon' }}
+
+permissions:
+  actions: write
+  check: write
+  pull-request: write
+
+jobs:
+  recreate-comment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Publish Report
+        uses: turing85/publish-report@v1.0.3
+        with:
+          checkout: 'true'
+          recreate-comment: true
+
+  populate-cache:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Populate Cache
+        with: ./.github/actions/populate-cache
+
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    needs:
+      - recreate-comment
+      - sonar
+      - owasp
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+
+      - name: Integration Test
+        uses: ./.github/actions/integration-test
