@@ -1,4 +1,4 @@
-name: Recreate Cache
+name: Populate Cache
 
 description: |
   An action to populate the gradle cache, if no cache exists.

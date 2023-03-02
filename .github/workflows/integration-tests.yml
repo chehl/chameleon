@@ -6,7 +6,10 @@ on:
     branches:
       - "main"
     paths:
-      - "**/docker-compose.yml"
+      - 'localdeployment/docker-compose.yml'
+  pull_request:
+    paths:
+      - 'localdeployment/docker-compose.yml'
 
 concurrency:
   group: "workflow = ${{ github.workflow }}, ref = ${{ github.event.ref }}, pr = ${{ github.event.pull_request.id }}"
@@ -14,8 +17,8 @@ concurrency:
 
 permissions:
   actions: write
-  check: write
-  pull-request: write
+  checks: write
+  pull-requests: write
 
 jobs:
   recreate-comment:
@@ -35,20 +38,17 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v3
 
-      - name: Populate Cache
-        with: ./.github/actions/populate-cache
+      - uses: ./.github/actions/populate-cache
 
   integration-tests:
     runs-on: ubuntu-latest
 
     needs:
       - recreate-comment
-      - sonar
-      - owasp
+      - populate-cache
 
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
 
-      - name: Integration Test
-        uses: ./.github/actions/integration-test
+      - uses: ./.github/actions/integration-test
