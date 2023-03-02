@@ -1,0 +1,134 @@
+name: Integration Test
+
+description: |
+  An action to execute the integration tests.
+
+inputs:
+  download-jars:
+    description: |
+      Whether the JARs should be downloaded from an artifact (true) or the application should be compiled.
+    default: 'false'
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'temurin'
+        cache: 'gradle'
+
+    - name: Download JARs
+      uses: actions/download-artifact@v3
+      if: ${{ inputs.download-jars == 'true' }}
+      with:
+        name: jars
+
+    - name: Build
+      if: ${{ inputs.download-jars == 'true' }}
+      shell: bash
+      run: ./gradlew --no-daemon build
+
+    - name: Start docker-compose Environment and Run Integration Tests
+      shell: bash
+      run: |
+        function wait_for() {
+          [ -n "${1}" ] || return 1
+          local host="${1}"
+          local service_name="${2:-${host}}"
+          local expected_code="${3:-200}"
+          local counter=0
+          printf "Waiting for %s to become ready" "${service_name}"
+          while [[ "$(curl -s -o /dev/null -w "%{http_code}" "${host}")" != "${expected_code}" ]]
+          do
+            (( counter = counter + 1 ))
+            printf "."
+            if [[ "${counter}" -ge 12 ]]
+            then
+              printf "Waited for 1 minute, %s did not become ready. Exiting.\n" "${service_name}"
+              return 1
+            fi
+            sleep 5
+          done
+          printf "OK\n"
+        }
+
+        function stop_docker() {
+          echo "Stopping docker-compose environment"
+          docker compose -f localdeployment/docker-compose.yml down
+        }
+
+        function start_docker() {
+          echo "Starting docker-compose environment"
+          local error_code=0
+          docker compose -f localdeployment/docker-compose.yml up -d || error_code="${?}"
+          if [[ "${error_code}" -ne 0 ]]
+          then
+            echo "command [docker-compose ... up ...] returned non-zero exit code ${error_code}. Exiting."
+            exit "${error_code}"
+          fi
+          error_code=0
+          wait_for "http://localhost:4444/auth/health/ready" "keycloak" || error_code="${?}"
+          if [[ "${error_code}" -ne 0 ]]
+          then
+            stop_docker
+            return "${error_code}"
+          fi
+        }
+
+        function start_chameleon() {
+          echo "Starting Chameleon"
+          mkdir -p logs
+          java -jar build/libs/chameleon-0.0.1-SNAPSHOT.jar 1>logs/log.txt 2>logs/error.txt &
+          return "${!}"
+        }
+
+        function run_integration_tests() {
+          start_chameleon
+          local jar_pid=${?}
+          local return_code=0
+          wait_for "localhost:8080/actuator/health/readiness" "Chameleon" || return_code="${?}"
+
+          if [[ "${return_code}" -eq 0 ]]
+          then
+            ./gradlew --no-daemon intTest || return_code="${?}"
+
+            echo "Stopping Chameleon"
+            kill "${jar_pid}"
+          fi
+          return "${return_code}"
+        }
+
+        start_docker || exit "${?}"
+        return_code=0
+        run_integration_tests || return_code="${?}"
+        stop_docker || true
+        exit "${return_code}"
+
+    - name: Upload Integration Test Report
+      uses: actions/upload-artifact@v3
+      if: ${{ always() }}
+      with:
+        name: int-test-report
+        path: '**/build/reports/cucumber/cucumber.xml'
+        if-no-files-found: error
+        retention-days: 2
+
+    - name: Upload Integration Test App Logs
+      uses: actions/upload-artifact@v3
+      if: ${{ always() }}
+      with:
+        name: int-test-app-logs
+        path: 'logs/*'
+        if-no-files-found: error
+        retention-days: 2
+
+    - name: Publish Report
+      if: ${{ always() }}
+      uses: turing85/publish-report@v1.0.3
+      with:
+        report-name: Integration Test
+        report-path: '**/build/reports/cucumber/cucumber.xml'

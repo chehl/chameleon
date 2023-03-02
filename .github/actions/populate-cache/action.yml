@@ -1,0 +1,26 @@
+name: Recreate Cache
+
+description: |
+  An action to populate the gradle cache, if no cache exists.
+
+runs:
+  using: composite
+
+  steps:
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        distribution: 'temurin'
+        cache: 'gradle'
+      id: setup
+
+    - name: Populate Cache
+      if: ${{ steps.setup.outputs.cache-hit != 'true' }}
+      shell: bash
+      run: |
+        ./gradlew --no-daemon build dependencyCheckUpdate
+
+    - name: Cancel Build
+      if: ${{ failure() }}
+      uses: andymckay/cancel-action@0.3
