@@ -79,7 +79,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 
     // integration test dependencies
-    intTestImplementation 'io.cucumber:cucumber-java:7.11.2'
+    intTestImplementation 'io.cucumber:cucumber-java:7.12.0'
     intTestImplementation 'io.cucumber:cucumber-spring:7.12.0'
     intTestImplementation 'org.keycloak:keycloak-authz-client:21.1.1'
     intTestImplementation 'net.masterthought:cucumber-reporting:5.7.5'
