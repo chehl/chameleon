@@ -51,7 +51,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security:3.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-actuator:3.1.0'
-    implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.6'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.1.0'
 
     // prod dependencies
     implementation 'org.postgresql:postgresql:42.6.0'
