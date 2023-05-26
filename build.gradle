@@ -63,8 +63,8 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'commons-codec:commons-codec:1.15'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.11.0'
-    compileOnly 'org.projectlombok:lombok:1.18.26'
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
 
     // dev tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools:3.1.0'
@@ -75,16 +75,16 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:5.3.1'
     testImplementation 'net.bytebuddy:byte-buddy:1.14.4' // required by mockito
     testImplementation 'com.tngtech.archunit:archunit-junit5:1.0.1'
-    testCompileOnly 'org.projectlombok:lombok:1.18.26'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+    testCompileOnly 'org.projectlombok:lombok:1.18.28'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
 
     // integration test dependencies
     intTestImplementation 'io.cucumber:cucumber-java:7.12.0'
     intTestImplementation 'io.cucumber:cucumber-spring:7.12.0'
     intTestImplementation 'org.keycloak:keycloak-authz-client:21.1.1'
     intTestImplementation 'net.masterthought:cucumber-reporting:5.7.5'
-    intTestCompileOnly 'org.projectlombok:lombok:1.18.26'
-    intTestAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+    intTestCompileOnly 'org.projectlombok:lombok:1.18.28'
+    intTestAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
 }
 
 test {
