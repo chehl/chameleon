@@ -38,7 +38,8 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v3
 
-      - uses: ./.github/actions/populate-cache
+      - name: Populate cache
+        uses: ./.github/actions/populate-cache
 
   integration-tests:
     runs-on: ubuntu-latest
