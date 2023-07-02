@@ -5,9 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -64,15 +66,18 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtToAuthenticationTokenConverter());
-        http.anonymous();
-        http.cors().configurationSource(corsConfigurationSource());
+        http.oauth2ResourceServer(resourceServer ->
+            resourceServer.jwt(jwt ->
+                jwt.jwtAuthenticationConverter(jwtToAuthenticationTokenConverter())));
+        http.anonymous(Customizer.withDefaults());
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         // disable sessions (i.e. service is stateless)
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement(sessionManager ->
+            sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // disable CSRF because authentication and authorization is not based on cookies
-        http.csrf().disable();
+        http.csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/**").authenticated()

@@ -106,6 +106,6 @@ class ChameleonArchitectureTest {
                     .onlyDependOnClassesThat()
                     .resideInAnyPackage(
                             "cde.chameleon.api", "java..", "jakarta..", "org.springframework..",
-                            "io.swagger..", "org.slf4j..", "lombok..", "org.apache.commons..")
+                            "io.swagger..", "org.slf4j..", "lombok..", "org.apache.commons..", "..jackson..")
                     .as("The cross-cutting concerns for APIs must not depend on other packages of project Chameleon.");
 }
