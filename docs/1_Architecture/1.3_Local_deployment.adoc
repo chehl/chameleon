@@ -6,15 +6,15 @@ We deploy dependent services (e.g., database, keycloak,) through docker compose.
 
 === Start containers
 
-Change directory to folder _localdeployment_. Then run `docker-compose` (compose v1) or `docker compose` (compose v2) (see also link:https://docs.docker.com/compose/compose-v2["Evolution of Compose"]):
+Change directory to folder _localdeployment_. Then run `docker-compose`:
 
-.With compose v1
+.With compose v2 standalone
 [source,bash]
 ----
 docker-compose up -d --build
 ----
 
-.With compose v2
+.With compose v2 plugin
 [source,bash]
 ----
 docker compose up -d --build
@@ -68,13 +68,13 @@ Web-console (directly): http://localhost:60080/pgadmin/
 
 Shut down the containers with:
 
-.With compose v1
+.With compose v2 standalone
 [source,bash]
 ----
 docker-compose down
 ----
 
-.With compose v2
+.With compose v2 plugin
 [source,bash]
 ----
 docker compose down
