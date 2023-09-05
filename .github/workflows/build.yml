@@ -40,7 +40,7 @@ jobs:
 
     steps:
       - name: Publish Report
-        uses: turing85/publish-report@v1.0.10
+        uses: turing85/publish-report@v1.0.11
         with:
           checkout: 'true'
           recreate-comment: true
@@ -105,7 +105,7 @@ jobs:
 
       - name: Publish Report
         if: ${{ always() }}
-        uses: turing85/publish-report@v1.0.10
+        uses: turing85/publish-report@v1.0.11
         with:
           report-name: JUnit Test
           report-path: '**/build/test-results/test/TEST*.xml'
