@@ -67,7 +67,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     // dev tools
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.1.3'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.1.4'
 
     // test dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.3'
