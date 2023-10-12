@@ -6,7 +6,7 @@ plugins {
     id 'io.freefair.lombok' version '8.4'
     id 'jacoco'
     id 'org.owasp.dependencycheck' version '8.4.0'
-    id 'com.adarshr.test-logger' version '3.2.0' // optional, creates pretty output of unit tests (during `gradle test`)
+    id 'com.adarshr.test-logger' version '4.0.0' // optional, creates pretty output of unit tests (during `gradle test`)
     id 'org.sonarqube' version '4.4.1.3373'
 }
 
