@@ -56,7 +56,7 @@ dependencies {
     // prod dependencies
     implementation 'org.postgresql:postgresql:42.6.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-    implementation 'org.modelmapper:modelmapper:3.1.1'
+    implementation 'org.modelmapper:modelmapper:3.2.0'
     implementation 'org.flywaydb:flyway-core:9.22.3'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.3'
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
