@@ -73,7 +73,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.1.5'
     testImplementation 'com.google.truth:truth:1.1.5'
     testImplementation 'org.mockito:mockito-core:5.7.0'
-    testImplementation 'net.bytebuddy:byte-buddy:1.14.9' // required by mockito
+    testImplementation 'net.bytebuddy:byte-buddy:1.14.10' // required by mockito
     testImplementation 'com.tngtech.archunit:archunit-junit5:1.2.0'
     testCompileOnly 'org.projectlombok:lombok:1.18.30'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
