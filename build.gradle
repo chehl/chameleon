@@ -60,7 +60,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:9.22.3'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0'
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
-    implementation 'org.apache.commons:commons-lang3:3.13.0'
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
     implementation 'commons-codec:commons-codec:1.16.0'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.12.0'
     compileOnly 'org.projectlombok:lombok:1.18.30'
