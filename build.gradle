@@ -80,7 +80,7 @@ dependencies {
 
     // integration test dependencies
     intTestImplementation 'io.cucumber:cucumber-java:7.14.0'
-    intTestImplementation 'io.cucumber:cucumber-spring:7.14.0'
+    intTestImplementation 'io.cucumber:cucumber-spring:7.14.1'
     intTestImplementation 'org.keycloak:keycloak-authz-client:23.0.0'
     intTestImplementation 'net.masterthought:cucumber-reporting:5.7.7'
     intTestCompileOnly 'org.projectlombok:lombok:1.18.30'
