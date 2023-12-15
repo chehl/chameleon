@@ -22,7 +22,7 @@ runs:
         cache: 'gradle'
 
     - name: Download JARs
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       if: ${{ inputs.download-jars == 'true' }}
       with:
         name: jars
@@ -109,7 +109,7 @@ runs:
         exit "${return_code}"
 
     - name: Upload Integration Test Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: ${{ always() }}
       with:
         name: int-test-report
@@ -118,7 +118,7 @@ runs:
         retention-days: 2
 
     - name: Upload Integration Test App Logs
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: ${{ always() }}
       with:
         name: int-test-app-logs
