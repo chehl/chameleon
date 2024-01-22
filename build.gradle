@@ -70,7 +70,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools:3.2.1'
 
     // test dependencies
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.2'
     testImplementation 'com.google.truth:truth:1.2.0'
     testImplementation 'org.mockito:mockito-core:5.9.0'
     testImplementation 'net.bytebuddy:byte-buddy:1.14.11' // required by mockito
