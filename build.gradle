@@ -61,7 +61,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.1'
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
     implementation 'org.apache.commons:commons-lang3:3.14.0'
-    implementation 'commons-codec:commons-codec:1.16.0'
+    implementation 'commons-codec:commons-codec:1.16.1'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.12.2'
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
