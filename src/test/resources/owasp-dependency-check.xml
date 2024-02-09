@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
     <suppress>
-        <notes>Spring Boot application only use SnakeYaml to parse application.yaml files, which should be trusted.</notes>
-        <cve>CVE-2022-1471</cve>
-    </suppress>
-    <suppress>
         <notes>False-Positive per issue https://github.com/jeremylong/DependencyCheck/issues/5779</notes>
         <cve>CVE-2023-35116</cve>
     </suppress>
