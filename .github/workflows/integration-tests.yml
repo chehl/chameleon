@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Publish Report
-        uses: turing85/publish-report@v1
+        uses: turing85/publish-report@v2
         with:
           checkout: 'true'
           recreate-comment: true
