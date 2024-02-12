@@ -128,7 +128,7 @@ runs:
 
     - name: Publish Report
       if: ${{ always() }}
-      uses: turing85/publish-report@v1
+      uses: turing85/publish-report@v2
       with:
         report-name: Integration Test
         report-path: '**/build/reports/cucumber/cucumber.xml'

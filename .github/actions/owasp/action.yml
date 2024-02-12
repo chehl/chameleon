@@ -29,7 +29,7 @@ runs:
 
     - name: Publish Report
       if: ${{ always() }}
-      uses: turing85/publish-report@v1
+      uses: turing85/publish-report@v2
       with:
         report-name: OWASP
         report-path: '**/build/reports/owasp/*-junit.xml'
