@@ -83,7 +83,7 @@ dependencies {
     intTestImplementation 'io.cucumber:cucumber-java:7.15.0'
     intTestImplementation 'io.cucumber:cucumber-spring:7.15.0'
     intTestImplementation 'org.keycloak:keycloak-authz-client:24.0.1'
-    intTestImplementation 'net.masterthought:cucumber-reporting:5.7.8'
+    intTestImplementation 'net.masterthought:cucumber-reporting:5.8.0'
     intTestCompileOnly 'org.projectlombok:lombok:1.18.30'
     intTestAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
