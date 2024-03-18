@@ -17,7 +17,7 @@ services:
 
   # database for the chameleon application
   chameleon-database:
-    image: docker.io/postgres:16.1-alpine3.19
+    image: docker.io/postgres:16.2-alpine3.19
     container_name: chameleon-database
     volumes:
       - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/chameleon-database:/docker-entrypoint-initdb.d
@@ -45,7 +45,7 @@ services:
 
   # keycloak
   keycloak:
-    image: quay.io/keycloak/keycloak:21.0.1-0
+    image: quay.io/keycloak/keycloak:24.0.1-0
     container_name: keycloak
     volumes:
       - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/keycloak/realm-chameleon.json:/opt/keycloak/data/import/realm-chameleon.json:ro
@@ -55,6 +55,7 @@ services:
       - KC_PROXY=passthrough
       - KC_HEALTH_ENABLED=true
       - KC_HTTP_RELATIVE_PATH=/auth
+      - KC_PROXY_HEADERS=xforwarded
     command:
       - "start-dev"
       - "--import-realm"
@@ -63,7 +64,7 @@ services:
 
   # nginx as reverse-proxy
   nginx:
-    image: docker.io/nginx:1.25.3-alpine-slim
+    image: docker.io/nginx:1.25.4-alpine-slim
     container_name: nginx
     extra_hosts:
       - hostip:host-gateway
