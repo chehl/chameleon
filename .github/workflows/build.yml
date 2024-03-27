@@ -76,6 +76,15 @@ jobs:
       - name: Build and Test
         run: ./gradlew --no-daemon build
 
+      - name: Upload Classes
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: classes
+          path: '**/build/classes/**/*.class'
+          if-no-files-found: error
+          retention-days: 2
+
       - name: Upload Test Report
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
@@ -122,6 +131,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download classes
+        uses: actions/download-artifact@v4
+        with:
+          name: classes
+
       - name: Download Coverage Report
         uses: actions/download-artifact@v4
         with:
@@ -145,7 +159,7 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.organization=chehl \
             -Dsonar.projectKey=chehl_chameleon \
-            -Dsonar.login=${SONAR_TOKEN} \
+            -Dsonar.token=${SONAR_TOKEN} \
             sonar
 
   owasp:
