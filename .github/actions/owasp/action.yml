@@ -14,9 +14,19 @@ runs:
         distribution: 'temurin'
         cache: 'gradle'
 
+    - name: Download OWASP DB Cache
+      uses: actions/cache@v4
+      with:
+        path: owasp-db
+        key: owasp-db
+
     - name: OWASP CVE Check
       shell: bash
-      run: ./gradlew --no-daemon dependencyCheckAnalyze
+      run: |
+        ./gradlew \
+          --no-daemon \
+          --system-prop dataDirectory=owasp-db \
+          dependencyCheckAnalyze
 
     - name: Upload OWASP Report
       uses: actions/upload-artifact@v4
@@ -26,6 +36,13 @@ runs:
         path: '**/build/reports/owasp/*-junit.xml'
         if-no-files-found: error
         retention-days: 2
+
+    - name: Update OWASP DB Cache
+      uses: actions/cache/save@v4
+      if: ${{ always() }}
+      with:
+        path: owasp-db
+        key: owasp-db
 
     - name: Publish Report
       if: ${{ always() }}

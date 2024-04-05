@@ -114,6 +114,11 @@ dependencyCheck {
     format = 'ALL'
     suppressionFile = 'src/test/resources/owasp-dependency-check.xml'
     outputDirectory = getBuildDir().getAbsolutePath() + '/reports/owasp'
+    if (System.hasProperty('dataDirectory')) {
+        data {
+            directory = project.getProjectDir().getAbsolutePath() + '/' + System.getProperty('dataDirectory')
+        }
+    }
 }
 
 tasks.register('intTest') {
