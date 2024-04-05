@@ -12,7 +12,7 @@ plugins {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -113,10 +113,10 @@ dependencyCheck {
     cveValidForHours = 10
     format = 'ALL'
     suppressionFile = 'src/test/resources/owasp-dependency-check.xml'
-    outputDirectory = getBuildDir().getAbsolutePath() + '/reports/owasp'
-    if (System.hasProperty('dataDirectory')) {
+    outputDirectory = project.layout.buildDirectory.get().asFile.absolutePath + '/reports/owasp'
+    if (System.properties.containsKey('dataDirectory')) {
         data {
-            directory = project.getProjectDir().getAbsolutePath() + '/' + System.getProperty('dataDirectory')
+            directory = project.projectDir.absolutePath + '/' + System.properties.get('dataDirectory')
         }
     }
 }
