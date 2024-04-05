@@ -155,11 +155,11 @@ jobs:
         run: |
           ./gradlew \
             --no-daemon \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.organization=chehl \
-            -Dsonar.projectKey=chehl_chameleon \
-            -Dsonar.token=${SONAR_TOKEN} \
+            --system-prop sonar.sourceEncoding=UTF-8 \
+            --system-prop sonar.host.url=https://sonarcloud.io \
+            --system-prop sonar.organization=chehl \
+            --system-prop sonar.projectKey=chehl_chameleon \
+            --system-prop sonar.token=${SONAR_TOKEN} \
             sonar
 
   owasp:
@@ -173,7 +173,7 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v4
 
-      - name: OWAS Dependency check
+      - name: OWASP Dependency check
         uses: ./.github/actions/owasp
 
   integration-tests:

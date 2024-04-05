@@ -19,7 +19,7 @@ runs:
       if: ${{ steps.setup.outputs.cache-hit != 'true' }}
       shell: bash
       run: |
-        ./gradlew --no-daemon build dependencyCheckUpdate
+        ./gradlew --no-daemon build
 
     - name: Cancel Build
       if: ${{ failure() }}
