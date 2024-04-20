@@ -3,6 +3,11 @@ name: OWASP CVE Scan
 description: |
   An action to execute OWASP CVE Scans.
 
+inputs:
+  nvd-api-key:
+    description: The API key for the NVD database, used by the dependency-check scan plugin
+    required: true
+
 runs:
   using: composite
 
@@ -26,6 +31,7 @@ runs:
         ./gradlew \
           --no-daemon \
           --system-prop dataDirectory=owasp-db \
+          --system-prop nvdApiKey=${{ inputs.nvd-api-key }} \
           dependencyCheckAnalyze
 
     - name: Upload OWASP Report

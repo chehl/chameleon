@@ -110,13 +110,20 @@ jacocoTestReport {
 
 // see: https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
-    cveValidForHours = 10
     format = 'ALL'
     suppressionFile = 'src/test/resources/owasp-dependency-check.xml'
     outputDirectory = project.layout.buildDirectory.get().asFile.absolutePath + '/reports/owasp'
+    hostedSuppressions {
+        validForHours = 10
+    }
     if (System.properties.containsKey('dataDirectory')) {
         data {
             directory = project.projectDir.absolutePath + '/' + System.properties.get('dataDirectory')
+        }
+    }
+    if (System.properties.containsKey('nvdApiKey')) {
+        nvd {
+            apiKey = System.properties.get('nvdApiKey')
         }
     }
 }

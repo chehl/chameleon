@@ -175,6 +175,8 @@ jobs:
 
       - name: OWASP Dependency check
         uses: ./.github/actions/owasp
+        with:
+          nvd-api-key: ${{ secrets.NVD_API_KEY }}
 
   integration-tests:
     runs-on: ubuntu-latest
