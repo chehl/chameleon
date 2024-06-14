@@ -71,7 +71,7 @@ runs:
             exit "${error_code}"
           fi
           error_code=0
-          wait_for "http://localhost:4444/auth/health/ready" "keycloak" || error_code="${?}"
+          wait_for "http://localhost:4444/auth-mgmt/health/ready" "keycloak" || error_code="${?}"
           if [[ "${error_code}" -ne 0 ]]
           then
             stop_docker

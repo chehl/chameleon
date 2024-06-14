@@ -45,7 +45,7 @@ services:
 
   # keycloak
   keycloak:
-    image: quay.io/keycloak/keycloak:24.0.4-0
+    image: quay.io/keycloak/keycloak:25.0.0-0
     container_name: keycloak
     volumes:
       - ${REMOTE_LOCALDEPLOYMENT_DIR:-.}/keycloak/realm-chameleon.json:/opt/keycloak/data/import/realm-chameleon.json:ro
@@ -56,11 +56,13 @@ services:
       - KC_HEALTH_ENABLED=true
       - KC_HTTP_RELATIVE_PATH=/auth
       - KC_PROXY_HEADERS=xforwarded
+      - KC_HTTP_MANAGEMENT_RELATIVE_PATH=/auth-mgmt
     command:
       - "start-dev"
       - "--import-realm"
     ports:
       - "48080:8080"
+      - "49000:9000"
 
   # nginx as reverse-proxy
   nginx:
