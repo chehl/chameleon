@@ -55,7 +55,7 @@ dependencies {
 
     // prod dependencies
     implementation 'org.postgresql:postgresql:42.7.4'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
     implementation 'org.modelmapper:modelmapper:3.2.1'
     implementation 'org.flywaydb:flyway-core:11.0.0'
     implementation 'org.flywaydb:flyway-database-postgresql:11.0.0'
