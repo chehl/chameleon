@@ -58,7 +58,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
     implementation 'org.modelmapper:modelmapper:3.2.1'
     implementation 'org.flywaydb:flyway-core:11.0.0'
-    implementation 'org.flywaydb:flyway-database-postgresql:11.0.0'
+    implementation 'org.flywaydb:flyway-database-postgresql:11.0.1'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2'
     implementation 'net.logstash.logback:logstash-logback-encoder:8.0'
     implementation 'org.apache.commons:commons-lang3:3.17.0'
