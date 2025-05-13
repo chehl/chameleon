@@ -63,7 +63,7 @@ dependencies {
     implementation 'net.logstash.logback:logstash-logback-encoder:8.1'
     implementation 'org.apache.commons:commons-lang3:3.17.0'
     implementation 'commons-codec:commons-codec:1.18.0'
-    implementation 'io.micrometer:micrometer-registry-prometheus:1.14.7'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.15.0'
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
 
