@@ -1,13 +1,17 @@
+buildscript {
+    apply from: 'dependencies.gradle'
+}
+
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.0'
-    id 'io.spring.dependency-management' version '1.1.7'
-    id "org.flywaydb.flyway" version "11.8.2"
-    id 'io.freefair.lombok' version '8.13.1'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+    id "org.flywaydb.flyway" version "${flywayVersion}"
+    id 'io.freefair.lombok' version "${lombokPluginVersion}"
     id 'jacoco'
-    id 'org.owasp.dependencycheck' version '12.1.1'
-    id 'com.adarshr.test-logger' version '4.0.0' // optional, creates pretty output of unit tests (during `gradle test`)
-    id 'org.sonarqube' version '6.2.0.5505'
+    id 'org.owasp.dependencycheck' version "${dependencycheckVersion}"
+    id 'com.adarshr.test-logger' version "${testLoggerVersion}" // optional, creates pretty output of unit tests (during `gradle test`)
+    id 'org.sonarqube' version "${sonarqubeVersion}"
 }
 
 java {
@@ -54,38 +58,38 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // prod dependencies
-    implementation 'org.postgresql:postgresql:42.7.6'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8'
-    implementation 'org.modelmapper:modelmapper:3.2.3'
-    implementation 'org.flywaydb:flyway-core:11.8.2'
-    implementation 'org.flywaydb:flyway-database-postgresql:11.8.2'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.0'
-    implementation 'net.logstash.logback:logstash-logback-encoder:8.1'
-    implementation 'org.apache.commons:commons-lang3:3.17.0'
-    implementation 'commons-codec:commons-codec:1.18.0'
-    implementation 'io.micrometer:micrometer-registry-prometheus:1.15.0'
-    compileOnly 'org.projectlombok:lombok:1.18.38'
-    annotationProcessor 'org.projectlombok:lombok:1.18.38'
+    implementation "org.postgresql:postgresql:${postgresVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+    implementation "org.modelmapper:modelmapper:${modelmapperVersion}"
+    implementation "org.flywaydb:flyway-core:${flywayVersion}"
+    implementation "org.flywaydb:flyway-database-postgresql:${flywayVersion}"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+    implementation "net.logstash.logback:logstash-logback-encoder:${logstashVersion}"
+    implementation "org.apache.commons:commons-lang3:${commonsLangVersion}"
+    implementation "commons-codec:commons-codec:${commonsCodecVersion}"
+    implementation "io.micrometer:micrometer-registry-prometheus:${micrometerRegistryVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
     // dev tools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     // test dependencies
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.google.truth:truth:1.4.4'
-    testImplementation 'org.mockito:mockito-core:5.18.0'
-    testImplementation 'net.bytebuddy:byte-buddy:1.17.5' // required by mockito
-    testImplementation 'com.tngtech.archunit:archunit-junit5:1.4.1'
-    testCompileOnly 'org.projectlombok:lombok:1.18.38'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "com.google.truth:truth:${truthVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+    testImplementation "net.bytebuddy:byte-buddy:${byteBuddyVersion}" // required by mockito
+    testImplementation "com.tngtech.archunit:archunit-junit5:${junitVersion}"
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
     // integration test dependencies
-    intTestImplementation 'io.cucumber:cucumber-java:7.23.0'
-    intTestImplementation 'io.cucumber:cucumber-spring:7.23.0'
-    intTestImplementation 'org.keycloak:keycloak-authz-client:26.0.5'
-    intTestImplementation 'net.masterthought:cucumber-reporting:5.8.4'
-    intTestCompileOnly 'org.projectlombok:lombok:1.18.38'
-    intTestAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+    intTestImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    intTestImplementation "io.cucumber:cucumber-spring:${cucumberVersion}"
+    intTestImplementation "org.keycloak:keycloak-authz-client:${keycloakVersion}"
+    intTestImplementation "net.masterthought:cucumber-reporting:${cucumberReportingVersion}"
+    intTestCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    intTestAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 
 test {
