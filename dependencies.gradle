@@ -1,0 +1,27 @@
+ext {
+    dependencycheckVersion = '12.1.1'
+    flywayVersion = '11.8.2'
+    lombokPluginVersion = '8.13.1'
+    lombokVersion = '1.18.38'
+    springBootVersion = '3.5.0'
+    springDependencyManagementVersion = '1.1.7'
+    sonarqubeVersion = '6.2.0.5505'
+    testLoggerVersion = '4.0.0'
+
+    commonsCodecVersion = '1.18.0'
+    commonsLangVersion = '3.17.0'
+    jacksonVersion = '2.19.0'
+    logstashVersion = '8.1'
+    micrometerRegistryVersion = '1.15.0'
+    modelmapperVersion = '3.2.3'
+    postgresVersion = '42.7.6'
+    springdocVersion = '2.8.8'
+
+    byteBuddyVersion = '1.17.5'
+    cucumberReportingVersion = '5.8.4'
+    cucumberVersion = '7.23.0'
+    junitVersion = '1.4.1'
+    keycloakVersion = '26.0.5'
+    mockitoVersion = '5.18.0'
+    truthVersion = '1.4.4'
+}
