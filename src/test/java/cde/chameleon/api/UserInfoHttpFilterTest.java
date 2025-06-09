@@ -7,6 +7,8 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import lombok.Getter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
@@ -67,6 +69,7 @@ class UserInfoHttpFilterTest {
         }
     }
 
+    @Getter
     private static class UserInfoFilterChain implements FilterChain {
 
         private String userName;
@@ -77,14 +80,6 @@ class UserInfoHttpFilterTest {
             userName = MDC.get(UserInfoHttpFilter.USER_NAME_KEY);
             userRoles = MDC.get(UserInfoHttpFilter.USER_ROLES_KEY);
         }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public String getUserRoles() {
-            return userRoles;
-        }
     }
 
     @Test
@@ -92,7 +87,7 @@ class UserInfoHttpFilterTest {
         // given
         UserInfoHttpFilter userInfoHttpFilter = new UserInfoHttpFilter();
         UserInfoFilterChain userInfoFilterChain = new UserInfoFilterChain();
-        String expectedUserName = RandomStringUtils.randomPrint(3, 20);
+        String expectedUserName = RandomStringUtils.secure().nextAlphabetic(3, 20);
         String expectedRoles = "role1, role2, role3";
         SecurityContextHolder.setContext(securityContext);
         Mockito.when(securityContext.getAuthentication())
