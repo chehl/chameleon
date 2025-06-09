@@ -2,6 +2,7 @@ package cde.chameleon.api;
 
 import cde.chameleon.ChameleonDisplayNameGenerator;
 import com.google.common.truth.Truth;
+import lombok.Getter;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +28,7 @@ class RequestIdHttpFilterTest {
     @Mock
     private HttpServletResponse httpServletResponse;
 
+    @Getter
     private static class RequestIdFilterChain implements FilterChain {
 
         private String requestId;
@@ -34,10 +36,6 @@ class RequestIdHttpFilterTest {
         @Override
         public void doFilter(ServletRequest request, ServletResponse response) {
             requestId = MDC.get(RequestIdHttpFilter.REQUEST_ID_LOGGING_KEY);
-        }
-
-        public String getRequestId() {
-            return requestId;
         }
     }
 
