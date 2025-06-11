@@ -1,5 +1,7 @@
 package cde.chameleon.api.etag;
 
+import java.util.Objects;
+
 import cde.chameleon.ChameleonDisplayNameGenerator;
 import cde.chameleon.api.ApiErrorDto;
 import com.google.common.truth.Truth;
@@ -14,8 +16,9 @@ class ETagExceptionHandlerTest {
 
     private void assertResponseStatus(String method, Class<? extends Exception> exception, HttpStatus expectedHttpStatus) {
         try {
-            Truth.assertThat(ETagExceptionHandler.class.getDeclaredMethod(method, exception)
-                            .getAnnotation(ResponseStatus.class).value())
+            Truth.assertThat(Objects.requireNonNull(
+                                ETagExceptionHandler.class.getDeclaredMethod(method, exception).getAnnotation(ResponseStatus.class))
+                            .value())
                     .isEqualTo(expectedHttpStatus);
         } catch (NoSuchMethodException e) {
             Assertions.fail();
