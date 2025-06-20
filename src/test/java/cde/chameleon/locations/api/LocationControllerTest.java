@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -247,8 +248,9 @@ class LocationControllerTest {
 
     private void assertResponseStatus(String method, Class<? extends Exception> exception, HttpStatus expectedHttpStatus) {
         try {
-            Truth.assertThat(LocationController.class.getDeclaredMethod(method, exception)
-                            .getAnnotation(ResponseStatus.class).value())
+            Truth.assertThat(Objects.requireNonNull(
+                                LocationController.class.getDeclaredMethod(method, exception).getAnnotation(ResponseStatus.class))
+                            .value())
                     .isEqualTo(expectedHttpStatus);
         } catch (NoSuchMethodException e) {
             Assertions.fail();

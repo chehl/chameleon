@@ -3,6 +3,7 @@ package cde.chameleon;
 import org.junit.jupiter.api.DisplayNameGenerator;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 public class ChameleonDisplayNameGenerator implements DisplayNameGenerator {
 
@@ -12,12 +13,12 @@ public class ChameleonDisplayNameGenerator implements DisplayNameGenerator {
     }
 
     @Override
-    public String generateDisplayNameForNestedClass(Class<?> nestedClass) {
+    public String generateDisplayNameForNestedClass(List<Class<?>> enclosingInstanceTypes, Class<?> nestedClass) {
         return nestedClass.getSimpleName();
     }
 
     private String capitalizeFirst(String text) {
-        return text.length() >= 1 ? Character.toUpperCase(text.charAt(0)) + text.substring(1) : text;
+        return !text.isEmpty() ? Character.toUpperCase(text.charAt(0)) + text.substring(1) : text;
     }
 
     private String highlightPrefix(String prefix, String text) {
@@ -33,7 +34,7 @@ public class ChameleonDisplayNameGenerator implements DisplayNameGenerator {
     }
 
     @Override
-    public String generateDisplayNameForMethod(Class<?> testClass, Method testMethod) {
+    public String generateDisplayNameForMethod(List<Class<?>> enclosingInstanceTypes, Class<?> testClass, Method testMethod) {
         String name = removeCamelCase(testMethod.getName());
         String[] parts = name.split("_");
         if (parts.length == 3) {

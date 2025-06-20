@@ -16,14 +16,16 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Collections;
+import java.util.Objects;
 
 @DisplayNameGeneration(ChameleonDisplayNameGenerator.class)
 class GlobalExceptionHandlerTest {
 
     private void assertResponseStatus(String method, Class<? extends Exception> exception, HttpStatus expectedHttpStatus) {
         try {
-            Truth.assertThat(GlobalExceptionHandler.class.getDeclaredMethod(method, exception)
-                            .getAnnotation(ResponseStatus.class).value())
+            Truth.assertThat(Objects.requireNonNull(
+                                GlobalExceptionHandler.class.getDeclaredMethod(method, exception).getAnnotation(ResponseStatus.class))
+                            .value())
                     .isEqualTo(expectedHttpStatus);
         } catch (NoSuchMethodException e) {
             Assertions.fail();
