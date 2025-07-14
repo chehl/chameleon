@@ -12,7 +12,7 @@ ext {
     commonsLangVersion = '3.18.0'
     jacksonVersion = '2.19.1'
     logstashVersion = '8.1'
-    micrometerRegistryVersion = '1.15.1'
+    micrometerRegistryVersion = '1.15.2'
     modelmapperVersion = '3.2.4'
     postgresVersion = '42.7.7'
     springdocVersion = '2.8.9'
