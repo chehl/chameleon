@@ -17,11 +17,11 @@ public class LocationRandom {
     }
 
     public static String randomName() {
-        return RandomStringUtils.randomPrint(1, 20);
+        return RandomStringUtils.secure().nextAlphabetic(1, 20);
     }
 
     public static String randomAddress() {
-        return RandomStringUtils.randomPrint(1, 200);
+        return RandomStringUtils.secure().nextAlphabetic(1, 200);
     }
 
     public static BigDecimal randomLatitude() {

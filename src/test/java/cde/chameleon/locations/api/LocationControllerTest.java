@@ -247,9 +247,9 @@ class LocationControllerTest {
 
     private void assertResponseStatus(String method, Class<? extends Exception> exception, HttpStatus expectedHttpStatus) {
         try {
-            Truth.assertThat(LocationController.class.getDeclaredMethod(method, exception)
-                            .getAnnotation(ResponseStatus.class).value())
-                    .isEqualTo(expectedHttpStatus);
+            ResponseStatus responseStatus = LocationController.class.getDeclaredMethod(method, exception).getAnnotation(ResponseStatus.class);
+            Truth.assertThat(responseStatus).isNotNull();
+            Truth.assertThat(responseStatus.value()).isEqualTo(expectedHttpStatus);
         } catch (NoSuchMethodException e) {
             Assertions.fail();
         }

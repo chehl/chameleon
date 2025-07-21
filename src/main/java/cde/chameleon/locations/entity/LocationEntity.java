@@ -52,8 +52,7 @@ public class LocationEntity {
     public int hashCode() {
         return Objects.hash(id);
     }
-
-    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
+    
     @Generated
     @Override
     public boolean equals(Object o) {

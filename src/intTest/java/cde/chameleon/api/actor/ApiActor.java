@@ -29,7 +29,9 @@ public abstract class ApiActor extends AuthenticationActor {
     }
 
     protected void sendRequest(HttpRequest httpRequest) throws IOException, InterruptedException {
-        httpResponse = HttpClient.newHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+            httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        }
     }
 
     protected HttpRequest.Builder newHttpRequest(String mappingPath) {
