@@ -22,7 +22,7 @@ runs:
         cache: 'gradle'
 
     - name: Download JARs
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       if: ${{ inputs.download-jars == 'true' }}
       with:
         name: jars
