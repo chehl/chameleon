@@ -19,7 +19,7 @@ ext {
 
     byteBuddyVersion = '1.17.7'
     cucumberReportingVersion = '5.10.0'
-    cucumberVersion = '7.27.1'
+    cucumberVersion = '7.27.2'
     junitVersion = '1.4.1'
     keycloakVersion = '26.0.6'
     mockitoVersion = '5.19.0'
