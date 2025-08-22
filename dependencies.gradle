@@ -18,7 +18,7 @@ ext {
     springdocVersion = '2.8.10'
 
     byteBuddyVersion = '1.17.7'
-    cucumberReportingVersion = '5.10.0'
+    cucumberReportingVersion = '5.10.1'
     cucumberVersion = '7.27.2'
     junitVersion = '1.4.1'
     keycloakVersion = '26.0.6'
