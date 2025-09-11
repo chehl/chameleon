@@ -23,5 +23,5 @@ ext {
     junitVersion = '1.4.1'
     keycloakVersion = '26.0.6'
     mockitoVersion = '5.19.0'
-    truthVersion = '1.4.4'
+    truthVersion = '1.4.5'
 }
