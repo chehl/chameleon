@@ -9,7 +9,7 @@ ext {
     testLoggerVersion = '4.0.0'
 
     commonsCodecVersion = '1.19.0'
-    commonsLangVersion = '3.18.0'
+    commonsLangVersion = '3.19.0'
     jacksonVersion = '2.20.0'
     logstashVersion = '8.1'
     micrometerRegistryVersion = '1.15.4'
