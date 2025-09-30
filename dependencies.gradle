@@ -13,7 +13,7 @@ ext {
     jacksonVersion = '2.20.0'
     logstashVersion = '8.1'
     micrometerRegistryVersion = '1.15.4'
-    modelmapperVersion = '3.2.4'
+    modelmapperVersion = '3.2.5'
     postgresVersion = '42.7.8'
     springdocVersion = '2.8.13'
 
