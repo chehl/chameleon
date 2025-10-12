@@ -17,7 +17,7 @@ ext {
     postgresVersion = '42.7.8'
     springdocVersion = '2.8.13'
 
-    byteBuddyVersion = '1.17.7'
+    byteBuddyVersion = '1.17.8'
     cucumberReportingVersion = '5.10.1'
     cucumberVersion = '7.30.0'
     junitVersion = '1.4.1'
