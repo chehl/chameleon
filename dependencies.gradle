@@ -5,7 +5,7 @@ ext {
     lombokVersion = '1.18.42'
     springBootVersion = '3.5.7'
     springDependencyManagementVersion = '1.1.7'
-    sonarqubeVersion = '7.0.0.6105'
+    sonarqubeVersion = '7.0.1.6134'
     testLoggerVersion = '4.0.0'
 
     commonsCodecVersion = '1.19.0'
