@@ -132,12 +132,12 @@ jobs:
           fetch-depth: 0
 
       - name: Download classes
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: classes
 
       - name: Download Coverage Report
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: code-coverage-report
 
