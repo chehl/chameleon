@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 
     @ApiResponse(responseCode = "422", description = "Invalid data")
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
     public ApiErrorDto handleConstraintViolation(ConstraintViolationException constraintViolationException) {
         log.info("Constraint violation", constraintViolationException);
         return new ApiErrorDto(
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
 
     @ApiResponse(responseCode = "422", description = "Invalid data")
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
     public ApiErrorDto handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         log.info("Method argument not valid", methodArgumentNotValidException);
         return new ApiErrorDto(

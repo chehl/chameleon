@@ -285,7 +285,7 @@ class LocationControllerTest {
 
         // then
         assertResponseStatus("handleNameNotUniqueLocationException", NameNotUniqueLocationException.class,
-                HttpStatus.UNPROCESSABLE_ENTITY);
+                HttpStatus.UNPROCESSABLE_CONTENT);
         Truth.assertThat(apiErrorDto).isNotNull();
         Truth.assertThat(apiErrorDto.getMessage()).contains(expectedId.toString());
         Truth.assertThat(apiErrorDto.getMessage()).contains(expectedName);

@@ -72,7 +72,7 @@ class GlobalExceptionHandlerTest {
         // then
         Truth.assertThat(apiErrorDto).isNotNull();
         Truth.assertThat(apiErrorDto.getMessage()).isEqualTo("Invalid data");
-        assertResponseStatus("handleConstraintViolation", ConstraintViolationException.class, HttpStatus.UNPROCESSABLE_ENTITY);
+        assertResponseStatus("handleConstraintViolation", ConstraintViolationException.class, HttpStatus.UNPROCESSABLE_CONTENT);
     }
 
     @Test
@@ -88,7 +88,7 @@ class GlobalExceptionHandlerTest {
         // then
         Truth.assertThat(apiErrorDto).isNotNull();
         Truth.assertThat(apiErrorDto.getMessage()).isEqualTo("Invalid data");
-        assertResponseStatus("handleMethodArgumentNotValidException", MethodArgumentNotValidException.class, HttpStatus.UNPROCESSABLE_ENTITY);
+        assertResponseStatus("handleMethodArgumentNotValidException", MethodArgumentNotValidException.class, HttpStatus.UNPROCESSABLE_CONTENT);
     }
 
     @Test

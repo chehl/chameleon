@@ -25,6 +25,6 @@ public class ApiSteps {
 
     @Then("it is unprocessable")
     public void verifyUnprocessableEntity() {
-        Truth.assertThat(apiActor.getHttpResponseStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
+        Truth.assertThat(apiActor.getHttpResponseStatus()).isEqualTo(HttpStatus.UNPROCESSABLE_CONTENT);
     }
 }
