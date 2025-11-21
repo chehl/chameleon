@@ -65,7 +65,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.oauth2ResourceServer(resourceServer ->
             resourceServer.jwt(jwt ->
                 jwt.jwtAuthenticationConverter(jwtToAuthenticationTokenConverter())));
