@@ -226,7 +226,7 @@ public class LocationController {
             responseCode = "422",
             description = "Name not unique")
     @ExceptionHandler(NameNotUniqueLocationException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
     public ApiErrorDto handleNameNotUniqueLocationException(
             NameNotUniqueLocationException nameNotUniqueLocationException) {
         log.info("Name not unique with {} for {}",

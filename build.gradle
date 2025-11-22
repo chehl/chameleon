@@ -41,6 +41,8 @@ sourceSets {
 }
 
 configurations {
+    mockitoAgent
+
     intTestImplementation.extendsFrom testImplementation
     intTestCompile.extendsFrom testCompile
     intTestRuntime.extendsFrom testRuntime
@@ -56,6 +58,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-flyway'
+
 
     // prod dependencies
     implementation "org.postgresql:postgresql:${postgresVersion}"
@@ -78,6 +82,7 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "com.google.truth:truth:${truthVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+    testCompile "org.mockito:mockito-inline:{mockitoVersion}"
     testImplementation "net.bytebuddy:byte-buddy:${byteBuddyVersion}" // required by mockito
     testImplementation "com.tngtech.archunit:archunit-junit5:${junitVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -90,6 +95,11 @@ dependencies {
     intTestImplementation "net.masterthought:cucumber-reporting:${cucumberReportingVersion}"
     intTestCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     intTestAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    mockitoAgent("org.mockito:mockito-core:${mockitoVersion}") {
+        transitive = false
+    }
+
 }
 
 test {
@@ -132,21 +142,18 @@ dependencyCheck {
     }
 }
 
-tasks.register('intTest') {
+task intTest(type: JavaExec) {
     group = 'build'
     dependsOn assemble, intTestClasses
-    doLast {
-        javaexec {
-            mainClass = "io.cucumber.core.cli.Main"
-            classpath = configurations.cucumberRuntime
-            classpath += sourceSets.main.output + sourceSets.test.output + sourceSets.intTest.output
-            args = [
-                    '--plugin', 'pretty',
-                    '--glue', 'cde.chameleon', 'src/intTest/resources',
-                    '--plugin', 'html:build/reports/cucumber/index.html',
-                    '--plugin', 'json:build/reports/cucumber/cucumber.json',
-                    '--plugin', 'junit:build/reports/cucumber/cucumber.xml'
-            ]
-        }
-    }
+    mainClass = "io.cucumber.core.cli.Main"
+    classpath = configurations.cucumberRuntime
+    classpath += sourceSets.main.output + sourceSets.test.output + sourceSets.intTest.output
+    jvmArgs += "-javaagent:${configurations.mockitoAgent.asPath}"
+    args = [
+            '--plugin', 'pretty',
+            '--glue', 'cde.chameleon', 'src/intTest/resources',
+            '--plugin', 'html:build/reports/cucumber/index.html',
+            '--plugin', 'json:build/reports/cucumber/cucumber.json',
+            '--plugin', 'junit:build/reports/cucumber/cucumber.xml'
+    ]
 }

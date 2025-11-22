@@ -41,8 +41,7 @@ spring:
     password: 'chameleon'
 
   jackson:
-    serialization:
-      WRITE_DATES_AS_TIMESTAMPS: false
+    property-naming-strategy: LOWER_CASE
 
 server:
   forward-headers-strategy: framework
