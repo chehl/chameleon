@@ -134,21 +134,17 @@ dependencyCheck {
     }
 }
 
-tasks.register('intTest') {
+task intTest(type: JavaExec) {
     group = 'build'
     dependsOn assemble, intTestClasses
-    doLast {
-        javaexec {
-            mainClass = "io.cucumber.core.cli.Main"
-            classpath = configurations.cucumberRuntime
-            classpath += sourceSets.main.output + sourceSets.test.output + sourceSets.intTest.output
-            args = [
-                    '--plugin', 'pretty',
-                    '--glue', 'cde.chameleon', 'src/intTest/resources',
-                    '--plugin', 'html:build/reports/cucumber/index.html',
-                    '--plugin', 'json:build/reports/cucumber/cucumber.json',
-                    '--plugin', 'junit:build/reports/cucumber/cucumber.xml'
-            ]
-        }
-    }
+    mainClass = "io.cucumber.core.cli.Main"
+    classpath = configurations.cucumberRuntime
+    classpath += sourceSets.main.output + sourceSets.test.output + sourceSets.intTest.output
+    args = [
+            '--plugin', 'pretty',
+            '--glue', 'cde.chameleon', 'src/intTest/resources',
+            '--plugin', 'html:build/reports/cucumber/index.html',
+            '--plugin', 'json:build/reports/cucumber/cucumber.json',
+            '--plugin', 'junit:build/reports/cucumber/cucumber.xml'
+    ]
 }
