@@ -1,5 +1,5 @@
 ext {
-    dependencycheckVersion = '12.1.9'
+    dependencycheckVersion = '12.2.0'
     flywayVersion = '11.20.1'
     lombokPluginVersion = '9.1.0'
     lombokVersion = '1.18.42'
