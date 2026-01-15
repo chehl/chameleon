@@ -21,7 +21,7 @@ ext {
     cucumberReportingVersion = '5.10.2'
     cucumberVersion = '7.33.0'
     junitVersion = '1.4.1'
-    keycloakVersion = '26.0.7'
+    keycloakVersion = '26.0.8'
     mockitoVersion = '5.21.0'
     truthVersion = '1.4.5'
 }
