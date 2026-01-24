@@ -3,7 +3,7 @@ ext {
     flywayVersion = '11.20.2'
     lombokPluginVersion = '9.2.0'
     lombokVersion = '1.18.42'
-    springBootVersion = '4.0.1'
+    springBootVersion = '4.0.2'
     springDependencyManagementVersion = '1.1.7'
     sonarqubeVersion = '7.2.2.6593'
     testLoggerVersion = '4.0.0'
