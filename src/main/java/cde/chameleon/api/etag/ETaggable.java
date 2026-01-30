@@ -18,7 +18,7 @@ public interface ETaggable {
         setETag(null);
         try {
             setETag(DigestUtils.md5Hex(new ObjectMapper().writeValueAsString(this)));
-        } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException _) {
             throw new IllegalStateException("Unable to calculate ETag!");
         }
     }

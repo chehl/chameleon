@@ -7,7 +7,7 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 
 @SpringBootApplication
 public class ChameleonApplication {
-	public static void main(String[] args) {
+	static void main(String[] args) {
 		SpringApplication.run(ChameleonApplication.class, args);
 	}
 

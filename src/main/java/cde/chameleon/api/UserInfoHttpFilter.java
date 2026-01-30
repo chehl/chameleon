@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @Order(2)
@@ -25,11 +26,12 @@ public class UserInfoHttpFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication());
 
         String name = authentication.getName();
         List<String> roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
+                .filter(Objects::nonNull)
                 .map(role -> role.startsWith("ROLE_") ? role.substring("ROLE_".length()) : role)
                 .toList();
 

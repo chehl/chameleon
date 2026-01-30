@@ -49,7 +49,7 @@ public class DatabaseLocationRepository implements LocationRepository {
     public void deleteById(UUID id) {
         try {
             repository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException _) {
             throw new NotFoundLocationException(id);
         }
     }
