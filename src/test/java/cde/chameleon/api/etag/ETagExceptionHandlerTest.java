@@ -17,7 +17,7 @@ class ETagExceptionHandlerTest {
             ResponseStatus responseStatus = ETagExceptionHandler.class.getDeclaredMethod(method, exception).getAnnotation(ResponseStatus.class);
             Truth.assertThat(responseStatus).isNotNull();
             Truth.assertThat(responseStatus.value()).isEqualTo(expectedHttpStatus);
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException _) {
             Assertions.fail();
         }
     }
