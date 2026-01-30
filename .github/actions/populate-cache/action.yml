@@ -3,14 +3,17 @@ name: Populate Cache
 description: |
   An action to populate the gradle cache, if no cache exists.
 
+env:
+  JAVA_VERSION: 25
+
 runs:
   using: composite
 
   steps:
-    - name: Set up JDK 21
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
       uses: actions/setup-java@v5
       with:
-        java-version: 21
+        java-version: ${{ env.JAVA_VERSION }}
         distribution: 'temurin'
         cache: 'gradle'
       id: setup

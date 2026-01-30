@@ -12,7 +12,7 @@ Project _Chameleon_ has been designed as an educational example project for lear
 
 === General
 
-- Java 17+
+- Java 25+
 - Docker 19+
 
 === Windows

@@ -3,6 +3,9 @@ name: Integration Test
 description: |
   An action to execute the integration tests.
 
+env:
+  JAVA_VERSION: 25
+
 inputs:
   download-jars:
     description: |
@@ -14,10 +17,10 @@ runs:
   using: composite
 
   steps:
-    - name: Set up JDK 21
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
       uses: actions/setup-java@v5
       with:
-        java-version: 21
+        java-version: ${{ env.JAVA_VERSION }}
         distribution: 'temurin'
         cache: 'gradle'
 

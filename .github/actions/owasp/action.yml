@@ -3,6 +3,9 @@ name: OWASP CVE Scan
 description: |
   An action to execute OWASP CVE Scans.
 
+env:
+  JAVA_VERSION: 25
+
 inputs:
   nvd-api-key:
     description: The API key for the NVD database, used by the dependency-check scan plugin
@@ -12,10 +15,10 @@ runs:
   using: composite
 
   steps:
-    - name: Set up JDK 21
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
       uses: actions/setup-java@v5
       with:
-        java-version: 21
+        java-version: ${{ env.JAVA_VERSION }}
         distribution: 'temurin'
         cache: 'gradle'
 
