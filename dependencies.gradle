@@ -2,7 +2,7 @@ ext {
     dependencycheckVersion = '12.2.1'
     flywayVersion = '12.4.0'
     lombokPluginVersion = '9.4.0'
-    lombokVersion = '1.18.44'
+    lombokVersion = '1.18.46'
     springBootVersion = '4.0.5'
     springDependencyManagementVersion = '1.1.7'
     sonarqubeVersion = '7.2.3.7755'
