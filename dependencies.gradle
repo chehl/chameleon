@@ -1,6 +1,6 @@
 ext {
     dependencycheckVersion = '12.2.1'
-    flywayVersion = '12.4.0'
+    flywayVersion = '12.5.0'
     lombokPluginVersion = '9.4.0'
     lombokVersion = '1.18.46'
     springBootVersion = '4.0.6'
