@@ -14,7 +14,7 @@ ext {
     logstashVersion = '9.0'
     micrometerRegistryVersion = '1.16.5'
     modelmapperVersion = '3.2.6'
-    postgresVersion = '42.7.10'
+    postgresVersion = '42.7.11'
     springdocVersion = '3.0.3'
 
     byteBuddyVersion = '1.18.8'
