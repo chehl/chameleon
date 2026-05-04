@@ -20,7 +20,7 @@ runs:
         cache: 'gradle'
 
     - name: Download OWASP DB Cache
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: owasp-db
         key: owasp-db
@@ -35,7 +35,7 @@ runs:
           dependencyCheckAnalyze
 
     - name: Upload OWASP Report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: ${{ always() }}
       with:
         name: owasp-report
@@ -44,7 +44,7 @@ runs:
         retention-days: 2
 
     - name: Update OWASP DB Cache
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v5
       if: ${{ always() }}
       with:
         path: owasp-db
@@ -52,7 +52,7 @@ runs:
 
     - name: Publish Report
       if: ${{ always() }}
-      uses: turing85/publish-report@v2
+      uses: turing85/publish-report@v3
       with:
         report-name: OWASP
         report-path: '**/build/reports/owasp/*-junit.xml'
