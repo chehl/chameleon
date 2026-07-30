@@ -8,7 +8,7 @@ ext {
     sonarqubeVersion = '7.3.1.8318'
     testLoggerVersion = '4.0.0'
 
-    commonsCodecVersion = '1.22.0'
+    commonsCodecVersion = '1.22.1'
     commonsLangVersion = '3.20.0'
     jacksonVersion = '2.22.1'
     logstashVersion = '9.0'
