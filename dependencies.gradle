@@ -15,7 +15,7 @@ ext {
     micrometerRegistryVersion = '1.17.1'
     modelmapperVersion = '3.2.6'
     postgresVersion = '42.7.13'
-    springdocVersion = '3.1.0'
+    springdocVersion = '3.1.1'
 
     byteBuddyVersion = '1.18.13'
     cucumberReportingVersion = '5.11.0'
