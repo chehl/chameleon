@@ -10,7 +10,7 @@ ext {
 
     commonsCodecVersion = '1.23.0'
     commonsLangVersion = '3.21.0'
-    jacksonVersion = '2.22.3'
+    jacksonVersion = '2.22.4'
     logstashVersion = '9.0'
     micrometerRegistryVersion = '1.17.1'
     modelmapperVersion = '3.2.7'
